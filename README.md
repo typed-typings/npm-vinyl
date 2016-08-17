@@ -13,11 +13,11 @@ typings install --save vinyl
 ```ts
 import File from 'vinyl';
 
-var coffeeFile = new File({
-  cwd: "/",
-  base: "/test/",
-  path: "/test/file.coffee",
-  contents: new Buffer("test = 123")
+const tsFile = new File({
+  cwd: '/',
+  base: '/test/',
+  path: '/test/file.ts',
+  contents: new Buffer('test = 123')
 });
 
 ```
