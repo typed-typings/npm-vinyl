@@ -3,6 +3,13 @@ import File = require('vinyl');
 import * as Stream from 'stream';
 import * as fs from 'fs';
 
+new File({
+  cwd: '/',
+  base: '/test/',
+  path: '/test/file.ts',
+  contents: new Buffer('test = 123')
+});
+
 let fakeStream: NodeJS.ReadWriteStream;
 
 describe('File', () => {
