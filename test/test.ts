@@ -3,7 +3,7 @@ import File = require('vinyl');
 import * as Stream from 'stream';
 import * as fs from 'fs';
 
-declare const fakeStream: NodeJS.ReadWriteStream;
+let fakeStream: NodeJS.ReadWriteStream;
 
 describe('File', () => {
 
