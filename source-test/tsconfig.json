@@ -5,7 +5,6 @@
     "noImplicitAny": true
   },
   "files": [
-    "file.ts",
     "../typings/index.d.ts",
     "../out/index.d.ts"
   ]
