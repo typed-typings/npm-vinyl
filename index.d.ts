@@ -116,6 +116,16 @@ declare class File {
     public isNull(): boolean;
 
     /**
+     * Returns true if the file represents a directory.
+     */
+    public isDirectory(): boolean;
+
+    /**
+     * Returns true if the file represents a symbolic link.
+     */
+    public isSymbolic(): boolean;
+
+    /**
      * Returns a new File object with all attributes cloned. Custom attributes are deep-cloned.
      */
     public clone(opts?: { contents?: boolean, deep?: boolean }): File;
@@ -128,14 +138,24 @@ declare class File {
     public pipe<T extends NodeJS.ReadWriteStream>(stream: T, opts?: File.PipeOptions): T;
 
     /**
-     * Returns a pretty String interpretation of the File. Useful for console.log.
+     * Returns a formatted-string interpretation of the Vinyl object.
+     * Automatically called by node's `console.log`.
      */
     public inspect(): string;
 
     /**
      * Checks if a given object is a vinyl file.
      */
-    public static isVinyl(obj: any): boolean;
+    public static isVinyl(obj: any): obj is File;
+
+    /**
+     * Static method used by Vinyl when setting values inside the constructor
+     * or when copying properties in `file.clone()`.
+     *
+     * Takes a string `property` and returns `true` if the property is not used
+     * internally, otherwise returns `false`.
+     */
+    public static isCustomProp(obj: any): boolean;
 }
 
 export = File;
