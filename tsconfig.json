@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "target": "es2015",
-    "module": "commonjs"
-  }
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "out"
+  },
+  "exclude": [
+    "node_modules",
+    "out",
+    "source"
+  ]
 }
