@@ -1,13 +1,12 @@
 {
   "name": "vinyl",
-  "version": "1.2.0",
-  "homepage": "https://github.com/types/npm-vinyl",
   "main": "index.d.ts",
+  "homepage": "https://github.com/gulpjs/vinyl#readme",
+  "version": "1.2.0",
   "globalDependencies": {
-    "node": "registry:env/node#6.0.0+20160813135048"
+    "node": "registry:env/node#6.0.0+20161015001438"
   },
-  "globalDevDependencies": {
-    "mocha": "registry:env/mocha#2.2.5+20160723033700",
-    "should": "registry:dt/should#8.1.1+20160608082854"
+  "devDependencies": {
+    "blue-tape": "registry:npm/blue-tape#0.2.0+20160723033700"
   }
 }
