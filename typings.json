@@ -4,7 +4,7 @@
   "homepage": "https://github.com/gulpjs/vinyl#readme",
   "version": "1.2.0",
   "globalDependencies": {
-    "node": "registry:env/node#6.0.0+20161015001438"
+    "node": "registry:env/node#6.0.0+20160813135048"
   },
   "globalDevDependencies": {
     "mocha": "registry:env/mocha#2.2.5+20160723033700",
