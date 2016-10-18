@@ -92,10 +92,10 @@ declare class File {
    * Returns path.relative for the file base and file path.
    * Example:
    *  var file = new File({
-     *    cwd: "/",
-     *    base: "/test/",
-     *    path: "/test/file.js"
-     *  });
+   *    cwd: "/",
+   *    base: "/test/",
+   *    path: "/test/file.js"
+   *  });
    *  console.log(file.relative); // file.js
    */
   public relative: string;
