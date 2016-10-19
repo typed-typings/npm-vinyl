@@ -1,21 +1,19 @@
-'use strict';
+import * as path from 'path';
+import expect = require('expect');
 
-var path = require('path');
-var expect = require('expect');
-
-var normalize = require('../lib/normalize');
+import normalize = require('../lib/normalize');
 
 describe('normalize()', function() {
 
   it('leaves empty strings unmodified', function(done) {
-    var result = normalize('');
+    const result = normalize('');
     expect(result).toEqual('');
     done();
   });
 
   it('applies path.normalize for everything else', function(done) {
-    var str = '/foo//../bar/baz';
-    var result = normalize(str);
+    const str = '/foo//../bar/baz';
+    const result = normalize(str);
     expect(result).toEqual(path.normalize(str));
     done();
   });

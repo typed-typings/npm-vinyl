@@ -10,6 +10,7 @@
     "node": "registry:env/node#6.0.0+20161015001438"
   },
   "globalDevDependencies": {
+    "expect": "registry:global/expect#1.13.4+20160211003958",
     "mocha": "registry:env/mocha#2.2.5+20160926180742",
     "should": "registry:dt/should#8.1.1+20160608082854"
   }

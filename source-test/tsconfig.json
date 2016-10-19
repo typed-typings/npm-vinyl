@@ -7,6 +7,8 @@
     "outDir": "./out/"
   },
   "files": [
+    "custom-typings/cloneable-readable.d.ts",
+    "custom-typings/mississippi.d.ts",
     "File.ts",
     "inspect-stream.ts",
     "normalize.ts",
