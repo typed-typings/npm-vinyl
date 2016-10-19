@@ -30,6 +30,6 @@
     "tslint": "^4.4.2",
     "tslint-config-typings": "^0.3.1",
     "typings": "^2.1.0",
-    "vinyl": "1.2.0"
+    "vinyl": "2.0.0"
   }
 }

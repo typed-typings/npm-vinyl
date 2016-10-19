@@ -7,7 +7,9 @@
     "outDir": "./out/"
   },
   "files": [
-    "File.ts",
+    "file.ts",
+    "inspect-stream.ts",
+    "normalize",
     "../typings/index.d.ts",
     "../out/index.d.ts"
   ]
