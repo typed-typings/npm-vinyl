@@ -431,7 +431,13 @@ describe('File', function() {
       expect(file2.base).toEqual(file.base);
       expect(file2.path).toEqual(file.path);
       expect(file2.contents).toNotBe(file.contents);
-      expect((<Buffer> file2.contents).toString('utf8')).toEqual((<Buffer> file.contents).toString('utf8'));
+      if (!(file2.contents instanceof Buffer)) {
+        throw new TypeError("Expected `file2.contents` to be a `Buffer`");
+      }
+      if (!(file.contents instanceof Buffer)) {
+        throw new TypeError("Expected `file.contents` to be a `Buffer`");
+      }
+      expect(file2.contents.toString('utf8')).toEqual(file.contents.toString('utf8'));
       done();
     });
 
@@ -606,8 +612,8 @@ describe('File', function() {
 
       expect(copy.stat.isFile()).toEqual(true);
       expect(copy.stat.isDirectory()).toEqual(false);
-      expect(file.stat).toBeA((<{Stats: Function}> <any> fs).Stats);
-      expect(copy.stat).toBeA((<{Stats: Function}> <any> fs).Stats);
+      expect(file.stat).toBeA(fs.Stats);
+      expect(copy.stat).toBeA(fs.Stats);
       done();
     });
 
@@ -734,8 +740,8 @@ describe('File', function() {
 
       expect(file2).toNotBe(file);
       expect(file2.constructor).toBe(ExtendedFile);
-      expect(file2).toBeA(ExtendedFile);
-      expect(file2).toBeA(Vinyl);
+      expect(file2).toBeAn(ExtendedFile);
+      expect(file2).toBeAn(Vinyl);
       expect(ExtendedFile.prototype.isPrototypeOf(file2)).toEqual(true);
       expect(Vinyl.prototype.isPrototypeOf(file2)).toEqual(true);
       done();
