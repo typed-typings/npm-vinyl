@@ -52,6 +52,20 @@ declare namespace File {
      * Default: `null`
      */
     contents?: Buffer | NodeJS.ReadWriteStream | null;
+
+    /**
+     *
+     * Any other option properties will be directly assigned to the new Vinyl
+     * object.
+     *
+     * ```js
+     * var Vinyl = require('vinyl');
+     *
+     * var file = new Vinyl({ foo: 'bar' });
+     * file.foo === 'bar'; // true
+     * ```
+     */
+    [customProperty: string]: any;
   }
 }
 
