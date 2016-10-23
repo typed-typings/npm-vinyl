@@ -23,7 +23,7 @@ declare namespace File {
      *
      * Default: `undefined`
      */
-    path?: string | null | undefined;
+    path?: string | null;
 
     /**
      * Stores the path history. If `options.path` and `options.history`
