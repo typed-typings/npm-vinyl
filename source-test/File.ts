@@ -5,6 +5,10 @@ import expect = require('expect');
 import miss = require('mississippi');
 import cloneable = require('cloneable-readable');
 
+interface ObjectConstructorWithAssign extends ObjectConstructor {
+  assign<T>(target: T, ...sources: {}[]): T
+}
+
 import Vinyl = require('../index');
 
 
@@ -15,48 +19,48 @@ const isCloneable = <(obj: any) => boolean> (<any> cloneable).isCloneable;
 
 const isWin = process.platform === 'win32';
 
-describe('File', function() {
+describe('File', function () {
 
-  describe('isVinyl()', function() {
+  describe('isVinyl()', function () {
 
-    it('returns true for a Vinyl object', function(done) {
+    it('returns true for a Vinyl object', function (done) {
       const file = new Vinyl();
       const result = Vinyl.isVinyl(file);
       expect(result).toEqual(true);
       done();
     });
 
-    it('returns false for a normal object', function(done) {
+    it('returns false for a normal object', function (done) {
       const result = Vinyl.isVinyl({});
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for null', function(done) {
+    it('returns false for null', function (done) {
       const result = Vinyl.isVinyl(null);
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a string', function(done) {
+    it('returns false for a string', function (done) {
       const result = Vinyl.isVinyl('foobar');
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a String object', function(done) {
+    it('returns false for a String object', function (done) {
       const result = Vinyl.isVinyl(new String('foobar'));
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a number', function(done) {
+    it('returns false for a number', function (done) {
       const result = Vinyl.isVinyl(1);
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a Number object', function(done) {
+    it('returns false for a Number object', function (done) {
       const result = Vinyl.isVinyl(new Number(1));
       expect(result).toEqual(false);
       done();
@@ -65,55 +69,55 @@ describe('File', function() {
     // This is based on current implementation
     // A test was added to document and make aware during internal changes
     // TODO: decide if this should be leak-able
-    it('returns true for a mocked object', function(done) {
-      const result = Vinyl.isVinyl({ _isVinyl: true });
+    it('returns true for a mocked object', function (done) {
+      const result = Vinyl.isVinyl({_isVinyl: true});
       expect(result).toEqual(true);
       done();
     });
   });
 
-  describe('defaults', function() {
+  describe('defaults', function () {
 
-    it('defaults cwd to process.cwd', function(done) {
+    it('defaults cwd to process.cwd', function (done) {
       const file = new Vinyl();
       expect(file.cwd).toEqual(process.cwd());
       done();
     });
 
-    it('defaults base to process.cwd', function(done) {
+    it('defaults base to process.cwd', function (done) {
       const file = new Vinyl();
       expect(file.base).toEqual(process.cwd());
       done();
     });
 
-    it('defaults base to cwd property', function(done) {
+    it('defaults base to cwd property', function (done) {
       const cwd = path.normalize('/');
-      const file = new Vinyl({ cwd: cwd });
+      const file = new Vinyl({cwd: cwd});
       expect(file.base).toEqual(cwd);
       done();
     });
 
-    it('defaults path to null', function(done) {
+    it('defaults path to null', function (done) {
       const file = new Vinyl();
       expect(file.path).toNotExist();
       expect(file.path).toEqual(null);
       done();
     });
 
-    it('defaults history to an empty array', function(done) {
+    it('defaults history to an empty array', function (done) {
       const file = new Vinyl();
       expect(file.history).toEqual([]);
       done();
     });
 
-    it('defaults stat to null', function(done) {
+    it('defaults stat to null', function (done) {
       const file = new Vinyl();
       expect(file.stat).toNotExist();
       expect(file.stat).toEqual(null);
       done();
     });
 
-    it('defaults contents to null', function(done) {
+    it('defaults contents to null', function (done) {
       const file = new Vinyl();
       expect(file.contents).toNotExist();
       expect(file.contents).toEqual(null);
@@ -121,77 +125,77 @@ describe('File', function() {
     });
   });
 
-  describe('constructor()', function() {
+  describe('constructor()', function () {
 
-    it('sets base', function(done) {
+    it('sets base', function (done) {
       const val = path.normalize('/');
-      const file = new Vinyl({ base: val });
+      const file = new Vinyl({base: val});
       expect(file.base).toEqual(val);
       done();
     });
 
-    it('sets cwd', function(done) {
+    it('sets cwd', function (done) {
       const val = path.normalize('/');
-      const file = new Vinyl({ cwd: val });
+      const file = new Vinyl({cwd: val});
       expect(file.cwd).toEqual(val);
       done();
     });
 
-    it('sets path (and history)', function(done) {
+    it('sets path (and history)', function (done) {
       const val = path.normalize('/test.coffee');
-      const file = new Vinyl({ path: val });
+      const file = new Vinyl({path: val});
       expect(file.path).toEqual(val);
       expect(file.history).toEqual([val]);
       done();
     });
 
-    it('sets history (and path)', function(done) {
+    it('sets history (and path)', function (done) {
       const val = path.normalize('/test.coffee');
-      const file = new Vinyl({ history: [val] });
+      const file = new Vinyl({history: [val]});
       expect(file.path).toEqual(val);
       expect(file.history).toEqual([val]);
       done();
     });
 
-    it('sets stat', function(done) {
+    it('sets stat', function (done) {
       const val: any = {};
-      const file = new Vinyl({ stat: val });
+      const file = new Vinyl({stat: val});
       expect(file.stat).toEqual(val);
       done();
     });
 
-    it('sets contents', function(done) {
+    it('sets contents', function (done) {
       const val = new Buffer('test');
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.contents).toEqual(val);
       done();
     });
 
-    it('sets custom properties', function(done) {
+    it('sets custom properties', function (done) {
       const sourceMap = {};
-      const file = <Vinyl & {sourceMap: {}}> new Vinyl(<any> { sourceMap: sourceMap });
+      const file = <Vinyl & {sourceMap: {}}> new Vinyl(<any> {sourceMap: sourceMap});
       expect(file.sourceMap).toEqual(sourceMap);
       done();
     });
 
-    it('normalizes path', function(done) {
+    it('normalizes path', function (done) {
       const val = '/test/foo/../test.coffee';
       const expected = path.normalize(val);
-      const file = new Vinyl({ path: val });
+      const file = new Vinyl({path: val});
       expect(file.path).toEqual(expected);
       expect(file.history).toEqual([expected]);
       done();
     });
 
-    it('normalizes and removes trailing separator from path', function(done) {
+    it('normalizes and removes trailing separator from path', function (done) {
       const val = '/test/foo/../foo/';
       const expected = path.normalize(val.slice(0, -1));
-      const file = new Vinyl({ path: val });
+      const file = new Vinyl({path: val});
       expect(file.path).toEqual(expected);
       done();
     });
 
-    it('normalizes history', function(done) {
+    it('normalizes history', function (done) {
       const val = [
         '/test/bar/../bar/test.coffee',
         '/test/foo/../test.coffee',
@@ -199,13 +203,13 @@ describe('File', function() {
       const expected = val.map((p) => {
         return path.normalize(p);
       });
-      const file = new Vinyl({ history: val });
+      const file = new Vinyl({history: val});
       expect(file.path).toEqual(expected[1]);
       expect(file.history).toEqual(expected);
       done();
     });
 
-    it('normalizes and removes trailing separator from history', function(done) {
+    it('normalizes and removes trailing separator from history', function (done) {
       const val = [
         '/test/foo/../foo/',
         '/test/bar/../bar/',
@@ -213,18 +217,18 @@ describe('File', function() {
       const expected = val.map((p) => {
         return path.normalize(p.slice(0, -1));
       });
-      const file = new Vinyl({ history: val });
+      const file = new Vinyl({history: val});
       expect(file.history).toEqual(expected);
       done();
     });
 
-    it('appends path to history if both exist and different from last', function(done) {
+    it('appends path to history if both exist and different from last', function (done) {
       const val = path.normalize('/test/baz/test.coffee');
       const history = [
         path.normalize('/test/bar/test.coffee'),
         path.normalize('/test/foo/test.coffee'),
       ];
-      const file = new Vinyl({ path: val, history: history });
+      const file = new Vinyl({path: val, history: history});
 
       const expectedHistory = history.concat(val);
 
@@ -233,28 +237,28 @@ describe('File', function() {
       done();
     });
 
-    it('does not append path to history if both exist and same as last', function(done) {
+    it('does not append path to history if both exist and same as last', function (done) {
       const val = path.normalize('/test/baz/test.coffee');
       const history = [
         path.normalize('/test/bar/test.coffee'),
         path.normalize('/test/foo/test.coffee'),
         val,
       ];
-      const file = new Vinyl({ path: val, history: history });
+      const file = new Vinyl({path: val, history: history});
 
       expect(file.path).toEqual(val);
       expect(file.history).toEqual(history);
       done();
     });
 
-    it('does not mutate history array passed in', function(done) {
+    it('does not mutate history array passed in', function (done) {
       const val = path.normalize('/test/baz/test.coffee');
       const history = [
         path.normalize('/test/bar/test.coffee'),
         path.normalize('/test/foo/test.coffee'),
       ];
       const historyCopy = Array.prototype.slice.call(history);
-      const file = new Vinyl({ path: val, history: history });
+      const file = new Vinyl({path: val, history: history});
 
       const expectedHistory = history.concat(val);
 
@@ -265,158 +269,152 @@ describe('File', function() {
     });
   });
 
-  describe('isBuffer()', function() {
+  describe('isBuffer()', function () {
 
-    it('returns true when the contents are a Buffer', function(done) {
+    it('returns true when the contents are a Buffer', function (done) {
       const val = new Buffer('test');
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.isBuffer()).toEqual(true);
       done();
     });
 
-    it('returns false when the contents are a Stream', function(done) {
+    it('returns false when the contents are a Stream', function (done) {
       const val = from([]);
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.isBuffer()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are null', function(done) {
-      const file = new Vinyl({ contents: null });
+    it('returns false when the contents are null', function (done) {
+      const file = new Vinyl({contents: null});
       expect(file.isBuffer()).toEqual(false);
       done();
     });
   });
 
-  describe('isStream()', function() {
+  describe('isStream()', function () {
 
-    it('returns false when the contents are a Buffer', function(done) {
+    it('returns false when the contents are a Buffer', function (done) {
       const val = new Buffer('test');
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.isStream()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are a Stream', function(done) {
+    it('returns true when the contents are a Stream', function (done) {
       const val = from([]);
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.isStream()).toEqual(true);
       done();
     });
 
-    it('returns false when the contents are null', function(done) {
-      const file = new Vinyl({ contents: null });
+    it('returns false when the contents are null', function (done) {
+      const file = new Vinyl({contents: null});
       expect(file.isStream()).toEqual(false);
       done();
     });
   });
 
-  describe('isNull()', function() {
+  describe('isNull()', function () {
 
-    it('returns false when the contents are a Buffer', function(done) {
+    it('returns false when the contents are a Buffer', function (done) {
       const val = new Buffer('test');
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.isNull()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are a Stream', function(done) {
+    it('returns false when the contents are a Stream', function (done) {
       const val = from([]);
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.isNull()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are null', function(done) {
-      const file = new Vinyl({ contents: null });
+    it('returns true when the contents are null', function (done) {
+      const file = new Vinyl({contents: null});
       expect(file.isNull()).toEqual(true);
       done();
     });
   });
 
-  describe('isDirectory()', function() {
-    const fakeStat: fs.Stats = <any> {
-      isDirectory: () => {
-        return true;
-      },
-    };
+  describe('isDirectory()', function () {
+    const fakeStat: fs.Stats = new fs.Stats();
+    fakeStat.isDirectory = () => true;
 
-    it('returns false when the contents are a Buffer', function(done) {
+    it('returns false when the contents are a Buffer', function (done) {
       const val = new Buffer('test');
-      const file = new Vinyl({ contents: val, stat: fakeStat });
+      const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isDirectory()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are a Stream', function(done) {
+    it('returns false when the contents are a Stream', function (done) {
       const val = from([]);
-      const file = new Vinyl({ contents: val, stat: fakeStat });
+      const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isDirectory()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are null & stat.isDirectory is true', function(done) {
-      const file = new Vinyl({ contents: null, stat: fakeStat });
+    it('returns true when the contents are null & stat.isDirectory is true', function (done) {
+      const file = new Vinyl({contents: null, stat: fakeStat});
       expect(file.isDirectory()).toEqual(true);
       done();
     });
 
-    it('returns false when stat exists but does not contain an isDirectory method', function(done) {
-      const file = new Vinyl({ contents: null, stat: <fs.Stats> {} });
+    it('returns false when stat exists but does not contain an isDirectory method', function (done) {
+      const file = new Vinyl({contents: null, stat: new fs.Stats()});
       expect(file.isDirectory()).toEqual(false);
       done();
     });
 
-    it('returns false when stat does not exist', function(done) {
-      const file = new Vinyl({ contents: null });
+    it('returns false when stat does not exist', function (done) {
+      const file = new Vinyl({contents: null});
       expect(file.isDirectory()).toEqual(false);
       done();
     });
   });
 
-  describe('isSymbolic()', function() {
-    const fakeStat: fs.Stats = <any> {
-      isSymbolicLink: () => {
-        return true;
-      },
-    };
+  describe('isSymbolic()', function () {
+    const fakeStat: fs.Stats = new fs.Stats();
+    fakeStat.isSymbolicLink = () => true;
 
-    it('returns false when the contents are a Buffer', function(done) {
+    it('returns false when the contents are a Buffer', function (done) {
       const val = new Buffer('test');
-      const file = new Vinyl({ contents: val, stat: fakeStat });
+      const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isSymbolic()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are a Stream', function(done) {
+    it('returns false when the contents are a Stream', function (done) {
       const val = from([]);
-      const file = new Vinyl({ contents: val, stat: fakeStat });
+      const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isSymbolic()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are null & stat.isSymbolicLink is true', function(done) {
-      const file = new Vinyl({ contents: null, stat: fakeStat });
+    it('returns true when the contents are null & stat.isSymbolicLink is true', function (done) {
+      const file = new Vinyl({contents: null, stat: fakeStat});
       expect(file.isSymbolic()).toEqual(true);
       done();
     });
 
-    it('returns false when stat exists but does not contain an isSymbolicLink method', function(done) {
-      const file = new Vinyl({ contents: null, stat: <fs.Stats> {} });
+    it('returns false when stat exists but does not contain an isSymbolicLink method', function (done) {
+      const file = new Vinyl({contents: null, stat: new fs.Stats()});
       expect(file.isSymbolic()).toEqual(false);
       done();
     });
 
-    it('returns false when stat does not exist', function(done) {
-      const file = new Vinyl({ contents: null });
+    it('returns false when stat does not exist', function (done) {
+      const file = new Vinyl({contents: null});
       expect(file.isSymbolic()).toEqual(false);
       done();
     });
   });
 
-  describe('clone()', function() {
+  describe('clone()', function () {
 
-    it('copies all attributes over with Buffer contents', function(done) {
+    it('copies all attributes over with Buffer contents', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -437,7 +435,7 @@ describe('File', function() {
       done();
     });
 
-    it('assigns Buffer content reference when contents option is false', function(done) {
+    it('assigns Buffer content reference when contents option is false', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -446,18 +444,18 @@ describe('File', function() {
       };
       const file = new Vinyl(options);
 
-      const copy1 = file.clone({ contents: false });
+      const copy1 = file.clone({contents: false});
       expect(copy1.contents).toBe(file.contents);
 
       const copy2 = file.clone();
       expect(copy2.contents).toNotBe(file.contents);
 
-      const copy3 = file.clone({ contents: <any> 'invalid' });
+      const copy3 = file.clone({contents: <any> 'invalid'});
       expect(copy3.contents).toNotBe(file.contents);
       done();
     });
 
-    it('copies all attributes over with Stream contents', function(done) {
+    it('copies all attributes over with Stream contents', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -507,7 +505,7 @@ describe('File', function() {
       ], assert);
     });
 
-    it('does not start flowing until all clones flows (data)', function(done) {
+    it('does not start flowing until all clones flows (data)', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -533,7 +531,7 @@ describe('File', function() {
         data2 += chunk.toString('utf8');
       });
 
-      process.nextTick(function() {
+      process.nextTick(function () {
         // Nothing was written yet
         expect(data).toEqual('');
         expect(data2).toEqual('');
@@ -578,7 +576,7 @@ describe('File', function() {
       ], done);
     });
 
-    it('copies all attributes over with null contents', function(done) {
+    it('copies all attributes over with null contents', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -596,7 +594,7 @@ describe('File', function() {
       done();
     });
 
-    it('properly clones the `stat` property', function(done) {
+    it('properly clones the `stat` property', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -616,7 +614,7 @@ describe('File', function() {
       done();
     });
 
-    it('properly clones the `history` property', function(done) {
+    it('properly clones the `history` property', function (done) {
       const options = {
         cwd: path.normalize('/'),
         base: path.normalize('/test/'),
@@ -633,13 +631,13 @@ describe('File', function() {
       done();
     });
 
-    it('copies custom properties', function(done) {
+    it('copies custom properties', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
         path: '/test/test.coffee',
         contents: null,
-        custom: { meta: {} },
+        custom: {meta: {}},
       };
 
       const file: Vinyl & {custom: { meta: {} }} = <any> new Vinyl(options);
@@ -655,7 +653,7 @@ describe('File', function() {
       done();
     });
 
-    it('copies history', function(done) {
+    it('copies history', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -679,13 +677,13 @@ describe('File', function() {
       done();
     });
 
-    it('supports deep & shallow copy of all attributes', function(done) {
+    it('supports deep & shallow copy of all attributes', function (done) {
       const options = {
         cwd: '/',
         base: '/test/',
         path: '/test/test.coffee',
         contents: null,
-        custom: { meta: {} },
+        custom: {meta: {}},
       };
 
       const file: Vinyl & {custom: { meta: {} }} = <any> new Vinyl(options);
@@ -702,7 +700,7 @@ describe('File', function() {
       expect(file3.custom.meta).toEqual(file.custom.meta);
       expect(file3.custom.meta).toNotBe(file.custom.meta);
 
-      const file4: Vinyl & {custom: { meta: {} }} = <any> file.clone({ deep: true });
+      const file4: Vinyl & {custom: { meta: {} }} = <any> file.clone({deep: true});
       expect(file4.custom).toEqual(file.custom);
       expect(file4.custom).toNotBe(file.custom);
       expect(file4.custom.meta).toEqual(file.custom.meta);
@@ -714,7 +712,7 @@ describe('File', function() {
       expect(file5.custom.meta).toEqual(file.custom.meta);
       expect(file5.custom.meta).toBe(file.custom.meta);
 
-      const file6: Vinyl & {custom: { meta: {} }} = <any> file.clone({ deep: false });
+      const file6: Vinyl & {custom: { meta: {} }} = <any> file.clone({deep: false});
       expect(file6.custom).toEqual(file.custom);
       expect(file6.custom).toBe(file.custom);
       expect(file6.custom.meta).toEqual(file.custom.meta);
@@ -723,8 +721,9 @@ describe('File', function() {
       done();
     });
 
-    it('supports inheritance', function(done) {
-      class ExtendedFile extends Vinyl {}
+    it('supports inheritance', function (done) {
+      class ExtendedFile extends Vinyl {
+      }
 
       const file: ExtendedFile = new ExtendedFile();
       const file2: ExtendedFile = file.clone();
@@ -739,22 +738,22 @@ describe('File', function() {
     });
   });
 
-  describe('inspect()', function() {
+  describe('inspect()', function () {
 
-    it('returns correct format when no contents and no path', function(done) {
+    it('returns correct format when no contents and no path', function (done) {
       const file = new Vinyl();
       expect(file.inspect()).toEqual('<File >');
       done();
     });
 
-    it('returns correct format when Buffer contents and no path', function(done) {
+    it('returns correct format when Buffer contents and no path', function (done) {
       const val = new Buffer('test');
-      const file = new Vinyl({ contents: val });
+      const file = new Vinyl({contents: val});
       expect(file.inspect()).toEqual('<File <Buffer 74 65 73 74>>');
       done();
     });
 
-    it('returns correct format when Buffer contents and relative path', function(done) {
+    it('returns correct format when Buffer contents and relative path', function (done) {
       const val = new Buffer('test');
       const file = new Vinyl({
         cwd: '/',
@@ -766,7 +765,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns correct format when Stream contents and relative path', function(done) {
+    it('returns correct format when Stream contents and relative path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -777,7 +776,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns correct format when null contents and relative path', function(done) {
+    it('returns correct format when null contents and relative path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -789,9 +788,9 @@ describe('File', function() {
     });
   });
 
-  describe('contents get/set', function() {
+  describe('contents get/set', function () {
 
-    it('returns _contents', function(done) {
+    it('returns _contents', function (done) {
       const val = new Buffer('test');
       const file: Vinyl & {_contents?: Buffer} = new Vinyl();
       file._contents = val;
@@ -799,7 +798,7 @@ describe('File', function() {
       done();
     });
 
-    it('sets _contents', function(done) {
+    it('sets _contents', function (done) {
       const val = new Buffer('test');
       const file: Vinyl & {_contents?: Buffer} = new Vinyl();
       file.contents = val;
@@ -807,7 +806,7 @@ describe('File', function() {
       done();
     });
 
-    it('sets a Buffer', function(done) {
+    it('sets a Buffer', function (done) {
       const val = new Buffer('test');
       const file = new Vinyl();
       file.contents = val;
@@ -815,7 +814,7 @@ describe('File', function() {
       done();
     });
 
-    it('wraps Stream in Cloneable', function(done) {
+    it('wraps Stream in Cloneable', function (done) {
       const val = from([]);
       const file = new Vinyl();
       file.contents = val;
@@ -823,7 +822,7 @@ describe('File', function() {
       done();
     });
 
-    it('does not double wrap a Cloneable', function(done) {
+    it('does not double wrap a Cloneable', function (done) {
       const val = from([]);
       const clone = cloneable(val);
       const file = new Vinyl();
@@ -832,7 +831,7 @@ describe('File', function() {
       done();
     });
 
-    it('sets null', function(done) {
+    it('sets null', function (done) {
       const val: Buffer | null = null;
       const file = new Vinyl();
       file.contents = val;
@@ -840,20 +839,22 @@ describe('File', function() {
       done();
     });
 
-    it('does not set a string', function(done) {
+    it('does not set a string', function (done) {
       const val = 'test';
       const file = new Vinyl();
+
       function invalid() {
         file.contents = <any> val;
       }
+
       expect(invalid).toThrow();
       done();
     });
   });
 
-  describe('cwd get/set', function() {
+  describe('cwd get/set', function () {
 
-    it('returns _cwd', function(done) {
+    it('returns _cwd', function (done) {
       const val = '/test';
       const file: Vinyl & {_cwd: string} = <any> new Vinyl();
       file._cwd = val;
@@ -861,7 +862,7 @@ describe('File', function() {
       done();
     });
 
-    it('sets _cwd', function(done) {
+    it('sets _cwd', function (done) {
       const val = '/test';
       const file: Vinyl & {_cwd: string} = <any> new Vinyl();
       file.cwd = val;
@@ -869,7 +870,7 @@ describe('File', function() {
       done();
     });
 
-    it('normalizes and removes trailing separator on set', function(done) {
+    it('normalizes and removes trailing separator on set', function (done) {
       const val = '/test/foo/../foo/';
       const expected = path.normalize(val.slice(0, -1));
       const file = new Vinyl();
@@ -887,7 +888,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on set with invalid values', function(done) {
+    it('throws on set with invalid values', function (done) {
       const invalidValues = [
         '',
         null,
@@ -902,10 +903,11 @@ describe('File', function() {
       ];
       const file = new Vinyl();
 
-      invalidValues.forEach(function(val) {
+      invalidValues.forEach(function (val) {
         function invalid() {
           file.cwd = <any> val;
         }
+
         expect(invalid).toThrow('cwd must be a non-empty string.');
       });
 
@@ -913,15 +915,15 @@ describe('File', function() {
     });
   });
 
-  describe('base get/set', function() {
+  describe('base get/set', function () {
 
-    it('proxies cwd when omitted', function(done) {
-      const file = new Vinyl({ cwd: '/test' });
+    it('proxies cwd when omitted', function (done) {
+      const file = new Vinyl({cwd: '/test'});
       expect(file.base).toEqual(file.cwd);
       done();
     });
 
-    it('proxies cwd when same', function(done) {
+    it('proxies cwd when same', function (done) {
       const file = new Vinyl({
         cwd: '/test',
         base: '/test',
@@ -938,7 +940,7 @@ describe('File', function() {
       done();
     });
 
-    it('proxies to cwd when null or undefined', function(done) {
+    it('proxies to cwd when null or undefined', function (done) {
       const file = new Vinyl({
         cwd: '/foo',
         base: '/bar',
@@ -953,7 +955,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns _base', function(done) {
+    it('returns _base', function (done) {
       const val = '/test/';
       const file: Vinyl & {_base: string} = <any> new Vinyl();
       file._base = val;
@@ -961,7 +963,7 @@ describe('File', function() {
       done();
     });
 
-    it('sets _base', function(done) {
+    it('sets _base', function (done) {
       const val = '/test/foo';
       const file: Vinyl & {_base: string} = <any> new Vinyl();
       file.base = val;
@@ -969,7 +971,7 @@ describe('File', function() {
       done();
     });
 
-    it('normalizes and removes trailing separator on set', function(done) {
+    it('normalizes and removes trailing separator on set', function (done) {
       const val = '/test/foo/../foo/';
       const expected = path.normalize(val.slice(0, -1));
       const file = new Vinyl();
@@ -987,7 +989,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on set with invalid values', function(done) {
+    it('throws on set with invalid values', function (done) {
       const invalidValues = [
         true,
         false,
@@ -1001,10 +1003,11 @@ describe('File', function() {
       ];
       const file = new Vinyl();
 
-      invalidValues.forEach(function(val) {
+      invalidValues.forEach(function (val) {
         function invalid() {
           file.base = <any> val;
         }
+
         expect(invalid).toThrow('base must be a non-empty string, or null/undefined.');
       });
 
@@ -1012,9 +1015,9 @@ describe('File', function() {
     });
   });
 
-  describe('relative get/set', function() {
+  describe('relative get/set', function () {
 
-    it('throws on set', function(done) {
+    it('throws on set', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1025,7 +1028,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on get with no path', function(done) {
+    it('throws on get with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1036,7 +1039,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns a relative path from base', function(done) {
+    it('returns a relative path from base', function (done) {
       const file = new Vinyl({
         base: '/test/',
         path: '/test/test.coffee',
@@ -1046,7 +1049,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns a relative path from cwd', function(done) {
+    it('returns a relative path from cwd', function (done) {
       const file = new Vinyl({
         cwd: '/',
         path: '/test/test.coffee',
@@ -1056,48 +1059,49 @@ describe('File', function() {
       done();
     });
 
-    it('does not append separator when directory', function(done) {
+    it('does not append separator when directory', function (done) {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true
+          }
+        )
       });
 
       expect(file.relative).toEqual(path.normalize('foo/bar'));
       done();
     });
 
-    it('does not append separator when symlink', function(done) {
+    it('does not append separator when symlink', function (done) {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
-        stat: <fs.Stats> <any> {
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isSymbolicLink: () => true
+          }
+        )
       });
 
       expect(file.relative).toEqual(path.normalize('foo/bar'));
       done();
     });
 
-    it('does not append separator when directory & symlink', function(done) {
+    it('does not append separator when directory & symlink', function (done) {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true,
+            isSymbolicLink: () => true
+          }
+        )
       });
 
       expect(file.relative).toEqual(path.normalize('foo/bar'));
@@ -1105,9 +1109,9 @@ describe('File', function() {
     });
   });
 
-  describe('dirname get/set', function() {
+  describe('dirname get/set', function () {
 
-    it('throws on get with no path', function(done) {
+    it('throws on get with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1118,7 +1122,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns the dirname without trailing separator', function(done) {
+    it('returns the dirname without trailing separator', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test',
@@ -1129,7 +1133,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on set with no path', function(done) {
+    it('throws on set with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1140,7 +1144,7 @@ describe('File', function() {
       done();
     });
 
-    it('replaces the dirname of the path', function(done) {
+    it('replaces the dirname of the path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1153,9 +1157,9 @@ describe('File', function() {
     });
   });
 
-  describe('basename get/set', function() {
+  describe('basename get/set', function () {
 
-    it('throws on get with no path', function(done) {
+    it('throws on get with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1166,7 +1170,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns the basename of the path', function(done) {
+    it('returns the basename of the path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1177,52 +1181,53 @@ describe('File', function() {
       done();
     });
 
-    it('does not append trailing separator when directory', function(done) {
+    it('does not append trailing separator when directory', function (done) {
       const file = new Vinyl({
         path: '/test/foo',
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true
+          }
+        )
       });
 
       expect(file.basename).toEqual('foo');
       done();
     });
 
-    it('does not append trailing separator when symlink', function(done) {
+    it('does not append trailing separator when symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo',
-        stat: <fs.Stats> <any> {
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isSymbolicLink: () => true
+          }
+        )
       });
 
       expect(file.basename).toEqual('foo');
       done();
     });
 
-    it('does not append trailing separator when directory & symlink', function(done) {
+    it('does not append trailing separator when directory & symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo',
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true,
+            isSymbolicLink: () => true
+          }
+        )
       });
 
       expect(file.basename).toEqual('foo');
       done();
     });
 
-    it('removes trailing separator', function(done) {
+    it('removes trailing separator', function (done) {
       const file = new Vinyl({
         path: '/test/foo/',
       });
@@ -1231,52 +1236,53 @@ describe('File', function() {
       done();
     });
 
-    it('removes trailing separator when directory', function(done) {
+    it('removes trailing separator when directory', function (done) {
       const file = new Vinyl({
         path: '/test/foo/',
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true
+          }
+        )
       });
 
       expect(file.basename).toEqual('foo');
       done();
     });
 
-    it('removes trailing separator when symlink', function(done) {
+    it('removes trailing separator when symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo/',
-        stat: <fs.Stats> <any> {
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isSymbolicLink: () => true
+          }
+        )
       });
 
       expect(file.basename).toEqual('foo');
       done();
     });
 
-    it('removes trailing separator when directory & symlink', function(done) {
+    it('removes trailing separator when directory & symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo/',
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true,
+            isSymbolicLink: () => true
+          }
+        )
       });
 
       expect(file.basename).toEqual('foo');
       done();
     });
 
-    it('throws on set with no path', function(done) {
+    it('throws on set with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1287,7 +1293,7 @@ describe('File', function() {
       done();
     });
 
-    it('replaces the basename of the path', function(done) {
+    it('replaces the basename of the path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1300,9 +1306,9 @@ describe('File', function() {
     });
   });
 
-  describe('stem get/set', function() {
+  describe('stem get/set', function () {
 
-    it('throws on get with no path', function(done) {
+    it('throws on get with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1313,7 +1319,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns the stem of the path', function(done) {
+    it('returns the stem of the path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1324,7 +1330,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on set with no path', function(done) {
+    it('throws on set with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1335,7 +1341,7 @@ describe('File', function() {
       done();
     });
 
-    it('replaces the stem of the path', function(done) {
+    it('replaces the stem of the path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1348,9 +1354,9 @@ describe('File', function() {
     });
   });
 
-  describe('extname get/set', function() {
+  describe('extname get/set', function () {
 
-    it('throws on get with no path', function(done) {
+    it('throws on get with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1361,7 +1367,7 @@ describe('File', function() {
       done();
     });
 
-    it('returns the extname of the path', function(done) {
+    it('returns the extname of the path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1372,7 +1378,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on set with no path', function(done) {
+    it('throws on set with no path', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1383,7 +1389,7 @@ describe('File', function() {
       done();
     });
 
-    it('replaces the extname of the path', function(done) {
+    it('replaces the extname of the path', function (done) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1396,9 +1402,9 @@ describe('File', function() {
     });
   });
 
-  describe('path get/set', function() {
+  describe('path get/set', function () {
 
-    it('records path in history upon instantiation', function(done) {
+    it('records path in history upon instantiation', function (done) {
       const file = new Vinyl({
         cwd: '/',
         path: '/test/test.coffee',
@@ -1412,7 +1418,7 @@ describe('File', function() {
       done();
     });
 
-    it('records path in history when set', function(done) {
+    it('records path in history when set', function (done) {
       const val = path.normalize('/test/test.js');
       const file = new Vinyl({
         cwd: '/',
@@ -1436,7 +1442,7 @@ describe('File', function() {
       done();
     });
 
-    it('does not record path in history when set to the current path', function(done) {
+    it('does not record path in history when set to the current path', function (done) {
       const val = path.normalize('/test/test.coffee');
       const file = new Vinyl({
         cwd: '/',
@@ -1453,7 +1459,7 @@ describe('File', function() {
       done();
     });
 
-    it('does not record path in history when set to empty string', function(done) {
+    it('does not record path in history when set to empty string', function (done) {
       const val = path.normalize('/test/test.coffee');
       const file = new Vinyl({
         cwd: '/',
@@ -1469,7 +1475,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on set with null path', function(done) {
+    it('throws on set with null path', function (done) {
       const file = new Vinyl();
 
       expect(file.path).toNotExist();
@@ -1483,7 +1489,7 @@ describe('File', function() {
       done();
     });
 
-    it('normalizes the path upon set', function(done) {
+    it('normalizes the path upon set', function (done) {
       const val = '/test/foo/../test.coffee';
       const expected = path.normalize(val);
       const file = new Vinyl();
@@ -1495,7 +1501,7 @@ describe('File', function() {
       done();
     });
 
-    it('removes the trailing separator upon set', function(done) {
+    it('removes the trailing separator upon set', function (done) {
       const file = new Vinyl();
       file.path = '/test/';
 
@@ -1504,13 +1510,14 @@ describe('File', function() {
       done();
     });
 
-    it('removes the trailing separator upon set when directory', function(done) {
+    it('removes the trailing separator upon set when directory', function (done) {
       const file = new Vinyl({
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true
+          }
+        )
       });
       file.path = '/test/';
 
@@ -1519,13 +1526,14 @@ describe('File', function() {
       done();
     });
 
-    it('removes the trailing separator upon set when symlink', function(done) {
+    it('removes the trailing separator upon set when symlink', function (done) {
       const file = new Vinyl({
-        stat: <fs.Stats> <any> {
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isSymbolicLink: () => true
+          }
+        )
       });
       file.path = '/test/';
 
@@ -1534,16 +1542,15 @@ describe('File', function() {
       done();
     });
 
-    it('removes the trailing separator upon set when directory & symlink', function(done) {
+    it('removes the trailing separator upon set when directory & symlink', function (done) {
       const file = new Vinyl({
-        stat: <fs.Stats> <any> {
-          isDirectory: () => {
-            return true;
-          },
-          isSymbolicLink: () => {
-            return true;
-          },
-        },
+        stat: (<ObjectConstructorWithAssign> Object).assign(
+          new fs.Stats(),
+          {
+            isDirectory: () => true,
+            isSymbolicLink: () => true
+          }
+        )
       });
       file.path = '/test/';
 
@@ -1553,16 +1560,16 @@ describe('File', function() {
     });
   });
 
-  describe('symlink get/set', function() {
+  describe('symlink get/set', function () {
 
-    it('return null on get with no symlink', function(done) {
+    it('return null on get with no symlink', function (done) {
       const file = new Vinyl();
 
       expect<string | null>(file.symlink).toEqual(null);
       done();
     });
 
-    it('returns _symlink', function(done) {
+    it('returns _symlink', function (done) {
       const val = '/test/test.coffee';
       const file: Vinyl & {_symlink: string} = <any> new Vinyl();
       file._symlink = val;
@@ -1571,7 +1578,7 @@ describe('File', function() {
       done();
     });
 
-    it('throws on set with non-string', function(done) {
+    it('throws on set with non-string', function (done) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1582,7 +1589,7 @@ describe('File', function() {
       done();
     });
 
-    it('sets _symlink', function(done) {
+    it('sets _symlink', function (done) {
       const val = '/test/test.coffee';
       const expected = path.normalize(val);
       const file: Vinyl & {_symlink: string} = <any> new Vinyl();
@@ -1592,7 +1599,7 @@ describe('File', function() {
       done();
     });
 
-    it('allows relative symlink', function(done) {
+    it('allows relative symlink', function (done) {
       const val = 'test.coffee';
       const file = new Vinyl();
       file.symlink = val;
@@ -1601,7 +1608,7 @@ describe('File', function() {
       done();
     });
 
-    it('normalizes and removes trailing separator upon set', function(done) {
+    it('normalizes and removes trailing separator upon set', function (done) {
       const val = '/test/foo/../bar/';
       const expected = path.normalize(val.slice(0, -1));
       const file = new Vinyl();
