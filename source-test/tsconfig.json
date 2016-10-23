@@ -3,6 +3,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "rootDir": "./",
     "outDir": "./out/"
   },

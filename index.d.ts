@@ -23,7 +23,7 @@ declare namespace File {
      *
      * Default: `undefined`
      */
-    path?: string;
+    path?: string | null | undefined;
 
     /**
      * Stores the path history. If `options.path` and `options.history`
@@ -43,7 +43,7 @@ declare namespace File {
      *
      * Default: `undefined`
      */
-    stat?: fs.Stats;
+    stat?: fs.Stats | null;
 
     /**
      * The contents of the file. If `options.contents` is a [`Stream`](#),
@@ -115,7 +115,7 @@ declare class File {
    * Throws when set to any value other than non-empty strings or
    * `null`/`undefined`.
    */
-  public base: string | null;
+  public base: string | null | undefined;
 
   /**
    * Gets and sets the absolute pathname string or `undefined`. Setting to a
@@ -125,7 +125,7 @@ declare class File {
    *
    * Throws when set to any value other than a string.
    */
-  public path: string;
+  public path: string | null | undefined;
 
   /**
    * Array of `file.path` values the Vinyl object has had, from
@@ -259,10 +259,22 @@ declare class File {
    */
   public symlink: string;
 
+  /**
+   *
+   * Any other option properties will be directly assigned to the new Vinyl
+   * object.
+   *
+   * ```js
+   * var Vinyl = require('vinyl');
+   *
+   * var file = new Vinyl({ foo: 'bar' });
+   * file.foo === 'bar'; // true
+   * ```
+   */
+  [customProperty: string]: any;
 
   // UNDOCUMENTED, see gulpjs/vinyl#119
-  public stat: fs.Stats;
-
+  public stat: fs.Stats | null;
 
   /**
    * Returns `true` if the file contents are a [`Buffer`](#), otherwise

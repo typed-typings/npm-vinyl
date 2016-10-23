@@ -431,13 +431,9 @@ describe('File', function() {
       expect(file2.base).toEqual(file.base);
       expect(file2.path).toEqual(file.path);
       expect(file2.contents).toNotBe(file.contents);
-      if (!(file2.contents instanceof Buffer)) {
-        throw new TypeError("Expected `file2.contents` to be a `Buffer`");
-      }
-      if (!(file.contents instanceof Buffer)) {
-        throw new TypeError("Expected `file.contents` to be a `Buffer`");
-      }
-      expect(file2.contents.toString('utf8')).toEqual(file.contents.toString('utf8'));
+      (expect(file2.contents) as expect.IObjectExpectation<Buffer | NodeJS.ReadableStream>).toBeA(Buffer);
+      (expect(file2.contents) as expect.IObjectExpectation<Buffer | NodeJS.ReadableStream>).toBeA(Buffer);
+      expect((<Buffer> file2.contents).toString('utf8')).toEqual((<Buffer> file.contents).toString('utf8'));
       done();
     });
 
@@ -478,8 +474,8 @@ describe('File', function() {
       expect(file2.contents).toNotBe(file.contents);
 
       let ends = 2;
-      let data: Buffer = null;
-      let data2: Buffer = null;
+      let data: Buffer | null = null;
+      let data2: Buffer | null = null;
 
       function assert(err: Error) {
         if (err) {
@@ -489,7 +485,9 @@ describe('File', function() {
 
         if (--ends === 0) {
           expect(data).toNotBe(data2);
-          expect(data.toString('utf8')).toEqual(data2.toString('utf8'));
+          expect(data).toNotBe(null);
+          expect(data2).toNotBe(null);
+          expect((<Buffer> data).toString('utf8')).toEqual((<Buffer> data2).toString('utf8'));
           done();
         }
       }
@@ -585,7 +583,7 @@ describe('File', function() {
         cwd: '/',
         base: '/test/',
         path: '/test/test.coffee',
-        contents: <Buffer> null,
+        contents: null,
       };
       const file = new Vinyl(options);
       const file2 = file.clone();
@@ -610,10 +608,11 @@ describe('File', function() {
       const file = new Vinyl(options);
       const copy = file.clone();
 
-      expect(copy.stat.isFile()).toEqual(true);
-      expect(copy.stat.isDirectory()).toEqual(false);
-      expect(file.stat).toBeA(fs.Stats);
-      expect(copy.stat).toBeA(fs.Stats);
+      expect(copy.stat).toNotBe(null);
+      expect((<fs.Stats> copy.stat).isFile()).toEqual(true);
+      expect((<fs.Stats> copy.stat).isDirectory()).toEqual(false);
+      (expect(file.stat) as expect.IObjectExpectation<fs.Stats>).toBeA(fs.Stats);
+      (expect(copy.stat) as expect.IObjectExpectation<fs.Stats>).toBeA(fs.Stats);
       done();
     });
 
@@ -639,7 +638,7 @@ describe('File', function() {
         cwd: '/',
         base: '/test/',
         path: '/test/test.coffee',
-        contents: <Buffer> null,
+        contents: null,
         custom: { meta: {} },
       };
 
@@ -661,7 +660,7 @@ describe('File', function() {
         cwd: '/',
         base: '/test/',
         path: '/test/test.coffee',
-        contents: <Buffer> null,
+        contents: null,
       };
       const history = [
         path.normalize('/test/test.coffee'),
@@ -685,7 +684,7 @@ describe('File', function() {
         cwd: '/',
         base: '/test/',
         path: '/test/test.coffee',
-        contents: <Buffer> null,
+        contents: null,
         custom: { meta: {} },
       };
 
@@ -725,18 +724,10 @@ describe('File', function() {
     });
 
     it('supports inheritance', function(done) {
-      function ExtendedFile() {
-        Vinyl.apply(this, arguments);
-      }
-      ExtendedFile.prototype = Object.create(Vinyl.prototype);
-      ExtendedFile.prototype.constructor = ExtendedFile;
-      // Just copy static stuff since Object.setPrototypeOf is node >=0.12
-      Object.keys(Vinyl).forEach((key) => {
-        (<any> ExtendedFile)[key] = (<{[key: string]: any}> Vinyl)[key];
-      });
+      class ExtendedFile extends Vinyl {}
 
-      const file: Object = new (<any> ExtendedFile)();
-      const file2: Object = (<any> file).clone();
+      const file: ExtendedFile = new ExtendedFile();
+      const file2: ExtendedFile = file.clone();
 
       expect(file2).toNotBe(file);
       expect(file2.constructor).toBe(ExtendedFile);
@@ -842,10 +833,10 @@ describe('File', function() {
     });
 
     it('sets null', function(done) {
-      const val: Buffer = null;
+      const val: Buffer | null = null;
       const file = new Vinyl();
       file.contents = val;
-      expect(file.contents).toEqual(null);
+      expect<Buffer | null>(file.contents).toEqual(null);
       done();
     });
 
@@ -954,11 +945,11 @@ describe('File', function() {
       });
       expect(file.base).toNotEqual(file.cwd);
       file.base = null;
-      expect(file.base).toEqual(file.cwd);
+      expect(file.base).toEqual(<any> file.cwd);
       file.base = '/bar/';
       expect(file.base).toNotEqual(file.cwd);
       file.base = undefined;
-      expect(file.base).toEqual(file.cwd);
+      expect(file.base).toEqual(<any> file.cwd);
       done();
     });
 
@@ -1567,7 +1558,7 @@ describe('File', function() {
     it('return null on get with no symlink', function(done) {
       const file = new Vinyl();
 
-      expect(file.symlink).toEqual(null);
+      expect<string | null>(file.symlink).toEqual(null);
       done();
     });
 
@@ -1584,7 +1575,7 @@ describe('File', function() {
       const file = new Vinyl();
 
       function invalid() {
-        file.symlink = null;
+        file.symlink = <any> null;
       }
 
       expect(invalid).toThrow('symlink should be a string');
