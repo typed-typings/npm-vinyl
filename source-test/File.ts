@@ -5,10 +5,6 @@ import expect = require('expect');
 import miss = require('mississippi');
 import cloneable = require('cloneable-readable');
 
-interface ObjectConstructorWithAssign extends ObjectConstructor {
-  assign<T>(target: T, ...sources: {}[]): T
-}
-
 import Vinyl = require('../index');
 
 
@@ -340,7 +336,7 @@ describe('File', function () {
 
   describe('isDirectory()', function () {
     const fakeStat: fs.Stats = new fs.Stats();
-    fakeStat.isDirectory = () => true;
+    fakeStat.isDirectory = (): boolean => true;
 
     it('returns false when the contents are a Buffer', function (done) {
       const val = new Buffer('test');
@@ -377,7 +373,7 @@ describe('File', function () {
 
   describe('isSymbolic()', function () {
     const fakeStat: fs.Stats = new fs.Stats();
-    fakeStat.isSymbolicLink = () => true;
+    fakeStat.isSymbolicLink = (): boolean => true;
 
     it('returns false when the contents are a Buffer', function (done) {
       const val = new Buffer('test');
@@ -1063,10 +1059,10 @@ describe('File', function () {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true
+            isDirectory: (): boolean => true
           }
         )
       });
@@ -1079,10 +1075,10 @@ describe('File', function () {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isSymbolicLink: () => true
+            isSymbolicLink: (): boolean => true
           }
         )
       });
@@ -1095,11 +1091,11 @@ describe('File', function () {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true,
-            isSymbolicLink: () => true
+            isDirectory: (): boolean => true,
+            isSymbolicLink: (): boolean => true
           }
         )
       });
@@ -1184,10 +1180,10 @@ describe('File', function () {
     it('does not append trailing separator when directory', function (done) {
       const file = new Vinyl({
         path: '/test/foo',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true
+            isDirectory: (): boolean => true
           }
         )
       });
@@ -1199,10 +1195,10 @@ describe('File', function () {
     it('does not append trailing separator when symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isSymbolicLink: () => true
+            isSymbolicLink: (): boolean => true
           }
         )
       });
@@ -1214,11 +1210,11 @@ describe('File', function () {
     it('does not append trailing separator when directory & symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true,
-            isSymbolicLink: () => true
+            isDirectory: (): boolean => true,
+            isSymbolicLink: (): boolean => true
           }
         )
       });
@@ -1239,10 +1235,10 @@ describe('File', function () {
     it('removes trailing separator when directory', function (done) {
       const file = new Vinyl({
         path: '/test/foo/',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true
+            isDirectory: (): boolean => true
           }
         )
       });
@@ -1254,10 +1250,10 @@ describe('File', function () {
     it('removes trailing separator when symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo/',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isSymbolicLink: () => true
+            isSymbolicLink: (): boolean => true
           }
         )
       });
@@ -1269,11 +1265,11 @@ describe('File', function () {
     it('removes trailing separator when directory & symlink', function (done) {
       const file = new Vinyl({
         path: '/test/foo/',
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true,
-            isSymbolicLink: () => true
+            isDirectory: (): boolean => true,
+            isSymbolicLink: (): boolean => true
           }
         )
       });
@@ -1512,10 +1508,10 @@ describe('File', function () {
 
     it('removes the trailing separator upon set when directory', function (done) {
       const file = new Vinyl({
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true
+            isDirectory: (): boolean => true
           }
         )
       });
@@ -1528,10 +1524,10 @@ describe('File', function () {
 
     it('removes the trailing separator upon set when symlink', function (done) {
       const file = new Vinyl({
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isSymbolicLink: () => true
+            isSymbolicLink: (): boolean => true
           }
         )
       });
@@ -1544,11 +1540,11 @@ describe('File', function () {
 
     it('removes the trailing separator upon set when directory & symlink', function (done) {
       const file = new Vinyl({
-        stat: (<ObjectConstructorWithAssign> Object).assign(
+        stat: Object.assign(
           new fs.Stats(),
           {
-            isDirectory: () => true,
-            isSymbolicLink: () => true
+            isDirectory: (): boolean => true,
+            isSymbolicLink: (): boolean => true
           }
         )
       });
