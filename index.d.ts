@@ -2,7 +2,6 @@ import * as fs from 'fs';
 
 declare namespace File {
   export interface FileOptions {
-
     /**
      * The current working directory of the file.
      *

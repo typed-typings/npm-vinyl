@@ -1,9 +1,10 @@
 {
-  "name": "vinyl",
+  "name": "npm-vinyl",
   "version": "1.0.0",
   "private": true,
   "description": "Typings for vinyl",
   "scripts": {
+    "prepare": "typings install",
     "build": "echo building... && typings bundle -o out/index.d.ts",
     "lint": "echo linting... && tslint \"**/*.ts\" -e \"source/**\" -e \"source-test/**\" -e \"out/**\" -e \"node_modules/**\" -e \"typings/**\"",
     "browser-test": "echo running browser tests... && echo no browser test",
@@ -30,6 +31,6 @@
     "tslint": "^4.4.2",
     "tslint-config-typings": "^0.3.1",
     "typings": "^2.1.0",
-    "vinyl": "2.0.0"
+    "vinyl": "^2.0.1"
   }
 }
