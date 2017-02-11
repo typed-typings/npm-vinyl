@@ -1,5 +1,4 @@
-import * as test from 'blue-tape';
-
+import test = require('blue-tape');
 import File = require('vinyl');
 
 test('File', (t) => {

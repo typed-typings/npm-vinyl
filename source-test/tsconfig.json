@@ -2,7 +2,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "rootDir": "./",
+    "outDir": "./out/"
   },
   "files": [
     "File.ts",
