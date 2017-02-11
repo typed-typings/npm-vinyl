@@ -19,44 +19,44 @@ describe('File', function () {
 
   describe('isVinyl()', function () {
 
-    it('returns true for a Vinyl object', function (done) {
+    it('returns true for a Vinyl object', function (done: MochaDone) {
       const file = new Vinyl();
       const result = Vinyl.isVinyl(file);
       expect(result).toEqual(true);
       done();
     });
 
-    it('returns false for a normal object', function (done) {
+    it('returns false for a normal object', function (done: MochaDone) {
       const result = Vinyl.isVinyl({});
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for null', function (done) {
+    it('returns false for null', function (done: MochaDone) {
       const result = Vinyl.isVinyl(null);
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a string', function (done) {
+    it('returns false for a string', function (done: MochaDone) {
       const result = Vinyl.isVinyl('foobar');
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a String object', function (done) {
+    it('returns false for a String object', function (done: MochaDone) {
       const result = Vinyl.isVinyl(new String('foobar'));
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a number', function (done) {
+    it('returns false for a number', function (done: MochaDone) {
       const result = Vinyl.isVinyl(1);
       expect(result).toEqual(false);
       done();
     });
 
-    it('returns false for a Number object', function (done) {
+    it('returns false for a Number object', function (done: MochaDone) {
       const result = Vinyl.isVinyl(new Number(1));
       expect(result).toEqual(false);
       done();
@@ -65,7 +65,7 @@ describe('File', function () {
     // This is based on current implementation
     // A test was added to document and make aware during internal changes
     // TODO: decide if this should be leak-able
-    it('returns true for a mocked object', function (done) {
+    it('returns true for a mocked object', function (done: MochaDone) {
       const result = Vinyl.isVinyl({_isVinyl: true});
       expect(result).toEqual(true);
       done();
@@ -74,46 +74,46 @@ describe('File', function () {
 
   describe('defaults', function () {
 
-    it('defaults cwd to process.cwd', function (done) {
+    it('defaults cwd to process.cwd', function (done: MochaDone) {
       const file = new Vinyl();
       expect(file.cwd).toEqual(process.cwd());
       done();
     });
 
-    it('defaults base to process.cwd', function (done) {
+    it('defaults base to process.cwd', function (done: MochaDone) {
       const file = new Vinyl();
       expect(file.base).toEqual(process.cwd());
       done();
     });
 
-    it('defaults base to cwd property', function (done) {
+    it('defaults base to cwd property', function (done: MochaDone) {
       const cwd = path.normalize('/');
       const file = new Vinyl({cwd: cwd});
       expect(file.base).toEqual(cwd);
       done();
     });
 
-    it('defaults path to null', function (done) {
+    it('defaults path to null', function (done: MochaDone) {
       const file = new Vinyl();
       expect(file.path).toNotExist();
       expect(file.path).toEqual(null);
       done();
     });
 
-    it('defaults history to an empty array', function (done) {
+    it('defaults history to an empty array', function (done: MochaDone) {
       const file = new Vinyl();
       expect(file.history).toEqual([]);
       done();
     });
 
-    it('defaults stat to null', function (done) {
+    it('defaults stat to null', function (done: MochaDone) {
       const file = new Vinyl();
       expect(file.stat).toNotExist();
       expect(file.stat).toEqual(null);
       done();
     });
 
-    it('defaults contents to null', function (done) {
+    it('defaults contents to null', function (done: MochaDone) {
       const file = new Vinyl();
       expect(file.contents).toNotExist();
       expect(file.contents).toEqual(null);
@@ -123,21 +123,21 @@ describe('File', function () {
 
   describe('constructor()', function () {
 
-    it('sets base', function (done) {
+    it('sets base', function (done: MochaDone) {
       const val = path.normalize('/');
       const file = new Vinyl({base: val});
       expect(file.base).toEqual(val);
       done();
     });
 
-    it('sets cwd', function (done) {
+    it('sets cwd', function (done: MochaDone) {
       const val = path.normalize('/');
       const file = new Vinyl({cwd: val});
       expect(file.cwd).toEqual(val);
       done();
     });
 
-    it('sets path (and history)', function (done) {
+    it('sets path (and history)', function (done: MochaDone) {
       const val = path.normalize('/test.coffee');
       const file = new Vinyl({path: val});
       expect(file.path).toEqual(val);
@@ -145,7 +145,7 @@ describe('File', function () {
       done();
     });
 
-    it('sets history (and path)', function (done) {
+    it('sets history (and path)', function (done: MochaDone) {
       const val = path.normalize('/test.coffee');
       const file = new Vinyl({history: [val]});
       expect(file.path).toEqual(val);
@@ -153,28 +153,28 @@ describe('File', function () {
       done();
     });
 
-    it('sets stat', function (done) {
+    it('sets stat', function (done: MochaDone) {
       const val: any = {};
       const file = new Vinyl({stat: val});
       expect(file.stat).toEqual(val);
       done();
     });
 
-    it('sets contents', function (done) {
+    it('sets contents', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({contents: val});
       expect(file.contents).toEqual(val);
       done();
     });
 
-    it('sets custom properties', function (done) {
+    it('sets custom properties', function (done: MochaDone) {
       const sourceMap = {};
       const file = <Vinyl & {sourceMap: {}}> new Vinyl(<any> {sourceMap: sourceMap});
       expect(file.sourceMap).toEqual(sourceMap);
       done();
     });
 
-    it('normalizes path', function (done) {
+    it('normalizes path', function (done: MochaDone) {
       const val = '/test/foo/../test.coffee';
       const expected = path.normalize(val);
       const file = new Vinyl({path: val});
@@ -183,7 +183,7 @@ describe('File', function () {
       done();
     });
 
-    it('normalizes and removes trailing separator from path', function (done) {
+    it('normalizes and removes trailing separator from path', function (done: MochaDone) {
       const val = '/test/foo/../foo/';
       const expected = path.normalize(val.slice(0, -1));
       const file = new Vinyl({path: val});
@@ -191,7 +191,7 @@ describe('File', function () {
       done();
     });
 
-    it('normalizes history', function (done) {
+    it('normalizes history', function (done: MochaDone) {
       const val = [
         '/test/bar/../bar/test.coffee',
         '/test/foo/../test.coffee',
@@ -205,7 +205,7 @@ describe('File', function () {
       done();
     });
 
-    it('normalizes and removes trailing separator from history', function (done) {
+    it('normalizes and removes trailing separator from history', function (done: MochaDone) {
       const val = [
         '/test/foo/../foo/',
         '/test/bar/../bar/',
@@ -218,7 +218,7 @@ describe('File', function () {
       done();
     });
 
-    it('appends path to history if both exist and different from last', function (done) {
+    it('appends path to history if both exist and different from last', function (done: MochaDone) {
       const val = path.normalize('/test/baz/test.coffee');
       const history = [
         path.normalize('/test/bar/test.coffee'),
@@ -233,7 +233,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not append path to history if both exist and same as last', function (done) {
+    it('does not append path to history if both exist and same as last', function (done: MochaDone) {
       const val = path.normalize('/test/baz/test.coffee');
       const history = [
         path.normalize('/test/bar/test.coffee'),
@@ -247,7 +247,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not mutate history array passed in', function (done) {
+    it('does not mutate history array passed in', function (done: MochaDone) {
       const val = path.normalize('/test/baz/test.coffee');
       const history = [
         path.normalize('/test/bar/test.coffee'),
@@ -267,21 +267,21 @@ describe('File', function () {
 
   describe('isBuffer()', function () {
 
-    it('returns true when the contents are a Buffer', function (done) {
+    it('returns true when the contents are a Buffer', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({contents: val});
       expect(file.isBuffer()).toEqual(true);
       done();
     });
 
-    it('returns false when the contents are a Stream', function (done) {
+    it('returns false when the contents are a Stream', function (done: MochaDone) {
       const val = from([]);
       const file = new Vinyl({contents: val});
       expect(file.isBuffer()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are null', function (done) {
+    it('returns false when the contents are null', function (done: MochaDone) {
       const file = new Vinyl({contents: null});
       expect(file.isBuffer()).toEqual(false);
       done();
@@ -290,21 +290,21 @@ describe('File', function () {
 
   describe('isStream()', function () {
 
-    it('returns false when the contents are a Buffer', function (done) {
+    it('returns false when the contents are a Buffer', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({contents: val});
       expect(file.isStream()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are a Stream', function (done) {
+    it('returns true when the contents are a Stream', function (done: MochaDone) {
       const val = from([]);
       const file = new Vinyl({contents: val});
       expect(file.isStream()).toEqual(true);
       done();
     });
 
-    it('returns false when the contents are null', function (done) {
+    it('returns false when the contents are null', function (done: MochaDone) {
       const file = new Vinyl({contents: null});
       expect(file.isStream()).toEqual(false);
       done();
@@ -313,21 +313,21 @@ describe('File', function () {
 
   describe('isNull()', function () {
 
-    it('returns false when the contents are a Buffer', function (done) {
+    it('returns false when the contents are a Buffer', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({contents: val});
       expect(file.isNull()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are a Stream', function (done) {
+    it('returns false when the contents are a Stream', function (done: MochaDone) {
       const val = from([]);
       const file = new Vinyl({contents: val});
       expect(file.isNull()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are null', function (done) {
+    it('returns true when the contents are null', function (done: MochaDone) {
       const file = new Vinyl({contents: null});
       expect(file.isNull()).toEqual(true);
       done();
@@ -338,33 +338,33 @@ describe('File', function () {
     const fakeStat: fs.Stats = new fs.Stats();
     fakeStat.isDirectory = (): boolean => true;
 
-    it('returns false when the contents are a Buffer', function (done) {
+    it('returns false when the contents are a Buffer', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isDirectory()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are a Stream', function (done) {
+    it('returns false when the contents are a Stream', function (done: MochaDone) {
       const val = from([]);
       const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isDirectory()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are null & stat.isDirectory is true', function (done) {
+    it('returns true when the contents are null & stat.isDirectory is true', function (done: MochaDone) {
       const file = new Vinyl({contents: null, stat: fakeStat});
       expect(file.isDirectory()).toEqual(true);
       done();
     });
 
-    it('returns false when stat exists but does not contain an isDirectory method', function (done) {
+    it('returns false when stat exists but does not contain an isDirectory method', function (done: MochaDone) {
       const file = new Vinyl({contents: null, stat: new fs.Stats()});
       expect(file.isDirectory()).toEqual(false);
       done();
     });
 
-    it('returns false when stat does not exist', function (done) {
+    it('returns false when stat does not exist', function (done: MochaDone) {
       const file = new Vinyl({contents: null});
       expect(file.isDirectory()).toEqual(false);
       done();
@@ -375,33 +375,33 @@ describe('File', function () {
     const fakeStat: fs.Stats = new fs.Stats();
     fakeStat.isSymbolicLink = (): boolean => true;
 
-    it('returns false when the contents are a Buffer', function (done) {
+    it('returns false when the contents are a Buffer', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isSymbolic()).toEqual(false);
       done();
     });
 
-    it('returns false when the contents are a Stream', function (done) {
+    it('returns false when the contents are a Stream', function (done: MochaDone) {
       const val = from([]);
       const file = new Vinyl({contents: val, stat: fakeStat});
       expect(file.isSymbolic()).toEqual(false);
       done();
     });
 
-    it('returns true when the contents are null & stat.isSymbolicLink is true', function (done) {
+    it('returns true when the contents are null & stat.isSymbolicLink is true', function (done: MochaDone) {
       const file = new Vinyl({contents: null, stat: fakeStat});
       expect(file.isSymbolic()).toEqual(true);
       done();
     });
 
-    it('returns false when stat exists but does not contain an isSymbolicLink method', function (done) {
+    it('returns false when stat exists but does not contain an isSymbolicLink method', function (done: MochaDone) {
       const file = new Vinyl({contents: null, stat: new fs.Stats()});
       expect(file.isSymbolic()).toEqual(false);
       done();
     });
 
-    it('returns false when stat does not exist', function (done) {
+    it('returns false when stat does not exist', function (done: MochaDone) {
       const file = new Vinyl({contents: null});
       expect(file.isSymbolic()).toEqual(false);
       done();
@@ -410,7 +410,7 @@ describe('File', function () {
 
   describe('clone()', function () {
 
-    it('copies all attributes over with Buffer contents', function (done) {
+    it('copies all attributes over with Buffer contents', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -431,7 +431,7 @@ describe('File', function () {
       done();
     });
 
-    it('assigns Buffer content reference when contents option is false', function (done) {
+    it('assigns Buffer content reference when contents option is false', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -451,7 +451,7 @@ describe('File', function () {
       done();
     });
 
-    it('copies all attributes over with Stream contents', function (done) {
+    it('copies all attributes over with Stream contents', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -501,7 +501,7 @@ describe('File', function () {
       ], assert);
     });
 
-    it('does not start flowing until all clones flows (data)', function (done) {
+    it('does not start flowing until all clones flows (data)', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -542,7 +542,7 @@ describe('File', function () {
       (<NodeJS.ReadableStream> file.contents).on('end', assert);
     });
 
-    it('does not start flowing until all clones flows (readable)', (done) => {
+    it('does not start flowing until all clones flows (readable)', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -572,7 +572,7 @@ describe('File', function () {
       ], done);
     });
 
-    it('copies all attributes over with null contents', function (done) {
+    it('copies all attributes over with null contents', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -590,7 +590,7 @@ describe('File', function () {
       done();
     });
 
-    it('properly clones the `stat` property', function (done) {
+    it('properly clones the `stat` property', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -610,7 +610,7 @@ describe('File', function () {
       done();
     });
 
-    it('properly clones the `history` property', function (done) {
+    it('properly clones the `history` property', function (done: MochaDone) {
       const options = {
         cwd: path.normalize('/'),
         base: path.normalize('/test/'),
@@ -627,7 +627,7 @@ describe('File', function () {
       done();
     });
 
-    it('copies custom properties', function (done) {
+    it('copies custom properties', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -636,8 +636,8 @@ describe('File', function () {
         custom: {meta: {}},
       };
 
-      const file: Vinyl & {custom: { meta: {} }} = <any> new Vinyl(options);
-      const file2: Vinyl & {custom: { meta: {} }} = <any> file.clone();
+      const file: Vinyl & {custom: {meta: {}}} = <any> new Vinyl(options);
+      const file2: Vinyl & {custom: {meta: {}}} = <any> file.clone();
 
       expect(file2).toNotBe(file);
       expect(file2.cwd).toEqual(file.cwd);
@@ -649,7 +649,7 @@ describe('File', function () {
       done();
     });
 
-    it('copies history', function (done) {
+    it('copies history', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -673,7 +673,7 @@ describe('File', function () {
       done();
     });
 
-    it('supports deep & shallow copy of all attributes', function (done) {
+    it('supports deep & shallow copy of all attributes', function (done: MochaDone) {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -682,33 +682,33 @@ describe('File', function () {
         custom: {meta: {}},
       };
 
-      const file: Vinyl & {custom: { meta: {} }} = <any> new Vinyl(options);
+      const file: Vinyl & {custom: {meta: {}}} = <any> new Vinyl(options);
 
-      const file2: Vinyl & {custom: { meta: {} }} = <any> file.clone();
+      const file2: Vinyl & {custom: {meta: {}}} = <any> file.clone();
       expect(file2.custom).toEqual(file.custom);
       expect(file2.custom).toNotBe(file.custom);
       expect(file2.custom.meta).toEqual(file.custom.meta);
       expect(file2.custom.meta).toNotBe(file.custom.meta);
 
-      const file3: Vinyl & {custom: { meta: {} }} = <any> file.clone(true);
+      const file3: Vinyl & {custom: {meta: {}}} = <any> file.clone(true);
       expect(file3.custom).toEqual(file.custom);
       expect(file3.custom).toNotBe(file.custom);
       expect(file3.custom.meta).toEqual(file.custom.meta);
       expect(file3.custom.meta).toNotBe(file.custom.meta);
 
-      const file4: Vinyl & {custom: { meta: {} }} = <any> file.clone({deep: true});
+      const file4: Vinyl & {custom: {meta: {}}} = <any> file.clone({deep: true});
       expect(file4.custom).toEqual(file.custom);
       expect(file4.custom).toNotBe(file.custom);
       expect(file4.custom.meta).toEqual(file.custom.meta);
       expect(file4.custom.meta).toNotBe(file.custom.meta);
 
-      const file5: Vinyl & {custom: { meta: {} }} = <any> file.clone(false);
+      const file5: Vinyl & {custom: {meta: {}}} = <any> file.clone(false);
       expect(file5.custom).toEqual(file.custom);
       expect(file5.custom).toBe(file.custom);
       expect(file5.custom.meta).toEqual(file.custom.meta);
       expect(file5.custom.meta).toBe(file.custom.meta);
 
-      const file6: Vinyl & {custom: { meta: {} }} = <any> file.clone({deep: false});
+      const file6: Vinyl & {custom: {meta: {}}} = <any> file.clone({deep: false});
       expect(file6.custom).toEqual(file.custom);
       expect(file6.custom).toBe(file.custom);
       expect(file6.custom.meta).toEqual(file.custom.meta);
@@ -717,7 +717,7 @@ describe('File', function () {
       done();
     });
 
-    it('supports inheritance', function (done) {
+    it('supports inheritance', function (done: MochaDone) {
       class ExtendedFile extends Vinyl {
       }
 
@@ -736,20 +736,20 @@ describe('File', function () {
 
   describe('inspect()', function () {
 
-    it('returns correct format when no contents and no path', function (done) {
+    it('returns correct format when no contents and no path', function (done: MochaDone) {
       const file = new Vinyl();
       expect(file.inspect()).toEqual('<File >');
       done();
     });
 
-    it('returns correct format when Buffer contents and no path', function (done) {
+    it('returns correct format when Buffer contents and no path', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({contents: val});
       expect(file.inspect()).toEqual('<File <Buffer 74 65 73 74>>');
       done();
     });
 
-    it('returns correct format when Buffer contents and relative path', function (done) {
+    it('returns correct format when Buffer contents and relative path', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl({
         cwd: '/',
@@ -761,7 +761,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns correct format when Stream contents and relative path', function (done) {
+    it('returns correct format when Stream contents and relative path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -772,7 +772,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns correct format when null contents and relative path', function (done) {
+    it('returns correct format when null contents and relative path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -786,7 +786,7 @@ describe('File', function () {
 
   describe('contents get/set', function () {
 
-    it('returns _contents', function (done) {
+    it('returns _contents', function (done: MochaDone) {
       const val = new Buffer('test');
       const file: Vinyl & {_contents?: Buffer} = new Vinyl();
       file._contents = val;
@@ -794,7 +794,7 @@ describe('File', function () {
       done();
     });
 
-    it('sets _contents', function (done) {
+    it('sets _contents', function (done: MochaDone) {
       const val = new Buffer('test');
       const file: Vinyl & {_contents?: Buffer} = new Vinyl();
       file.contents = val;
@@ -802,7 +802,7 @@ describe('File', function () {
       done();
     });
 
-    it('sets a Buffer', function (done) {
+    it('sets a Buffer', function (done: MochaDone) {
       const val = new Buffer('test');
       const file = new Vinyl();
       file.contents = val;
@@ -810,7 +810,7 @@ describe('File', function () {
       done();
     });
 
-    it('wraps Stream in Cloneable', function (done) {
+    it('wraps Stream in Cloneable', function (done: MochaDone) {
       const val = from([]);
       const file = new Vinyl();
       file.contents = val;
@@ -818,7 +818,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not double wrap a Cloneable', function (done) {
+    it('does not double wrap a Cloneable', function (done: MochaDone) {
       const val = from([]);
       const clone = cloneable(val);
       const file = new Vinyl();
@@ -827,7 +827,7 @@ describe('File', function () {
       done();
     });
 
-    it('sets null', function (done) {
+    it('sets null', function (done: MochaDone) {
       const val: Buffer | null = null;
       const file = new Vinyl();
       file.contents = val;
@@ -835,7 +835,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not set a string', function (done) {
+    it('does not set a string', function (done: MochaDone) {
       const val = 'test';
       const file = new Vinyl();
 
@@ -850,7 +850,7 @@ describe('File', function () {
 
   describe('cwd get/set', function () {
 
-    it('returns _cwd', function (done) {
+    it('returns _cwd', function (done: MochaDone) {
       const val = '/test';
       const file: Vinyl & {_cwd: string} = <any> new Vinyl();
       file._cwd = val;
@@ -858,7 +858,7 @@ describe('File', function () {
       done();
     });
 
-    it('sets _cwd', function (done) {
+    it('sets _cwd', function (done: MochaDone) {
       const val = '/test';
       const file: Vinyl & {_cwd: string} = <any> new Vinyl();
       file.cwd = val;
@@ -866,7 +866,7 @@ describe('File', function () {
       done();
     });
 
-    it('normalizes and removes trailing separator on set', function (done) {
+    it('normalizes and removes trailing separator on set', function (done: MochaDone) {
       const val = '/test/foo/../foo/';
       const expected = path.normalize(val.slice(0, -1));
       const file = new Vinyl();
@@ -884,7 +884,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with invalid values', function (done) {
+    it('throws on set with invalid values', function (done: MochaDone) {
       const invalidValues = [
         '',
         null,
@@ -913,13 +913,13 @@ describe('File', function () {
 
   describe('base get/set', function () {
 
-    it('proxies cwd when omitted', function (done) {
+    it('proxies cwd when omitted', function (done: MochaDone) {
       const file = new Vinyl({cwd: '/test'});
       expect(file.base).toEqual(file.cwd);
       done();
     });
 
-    it('proxies cwd when same', function (done) {
+    it('proxies cwd when same', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/test',
         base: '/test',
@@ -936,7 +936,7 @@ describe('File', function () {
       done();
     });
 
-    it('proxies to cwd when null or undefined', function (done) {
+    it('proxies to cwd when null or undefined', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/foo',
         base: '/bar',
@@ -951,7 +951,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns _base', function (done) {
+    it('returns _base', function (done: MochaDone) {
       const val = '/test/';
       const file: Vinyl & {_base: string} = <any> new Vinyl();
       file._base = val;
@@ -959,7 +959,7 @@ describe('File', function () {
       done();
     });
 
-    it('sets _base', function (done) {
+    it('sets _base', function (done: MochaDone) {
       const val = '/test/foo';
       const file: Vinyl & {_base: string} = <any> new Vinyl();
       file.base = val;
@@ -967,7 +967,7 @@ describe('File', function () {
       done();
     });
 
-    it('normalizes and removes trailing separator on set', function (done) {
+    it('normalizes and removes trailing separator on set', function (done: MochaDone) {
       const val = '/test/foo/../foo/';
       const expected = path.normalize(val.slice(0, -1));
       const file = new Vinyl();
@@ -985,7 +985,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with invalid values', function (done) {
+    it('throws on set with invalid values', function (done: MochaDone) {
       const invalidValues = [
         true,
         false,
@@ -1013,7 +1013,7 @@ describe('File', function () {
 
   describe('relative get/set', function () {
 
-    it('throws on set', function (done) {
+    it('throws on set', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1024,7 +1024,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on get with no path', function (done) {
+    it('throws on get with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1035,7 +1035,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns a relative path from base', function (done) {
+    it('returns a relative path from base', function (done: MochaDone) {
       const file = new Vinyl({
         base: '/test/',
         path: '/test/test.coffee',
@@ -1045,7 +1045,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns a relative path from cwd', function (done) {
+    it('returns a relative path from cwd', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         path: '/test/test.coffee',
@@ -1055,7 +1055,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not append separator when directory', function (done) {
+    it('does not append separator when directory', function (done: MochaDone) {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
@@ -1071,7 +1071,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not append separator when symlink', function (done) {
+    it('does not append separator when symlink', function (done: MochaDone) {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
@@ -1087,7 +1087,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not append separator when directory & symlink', function (done) {
+    it('does not append separator when directory & symlink', function (done: MochaDone) {
       const file = new Vinyl({
         base: '/test',
         path: '/test/foo/bar',
@@ -1107,7 +1107,7 @@ describe('File', function () {
 
   describe('dirname get/set', function () {
 
-    it('throws on get with no path', function (done) {
+    it('throws on get with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1118,7 +1118,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns the dirname without trailing separator', function (done) {
+    it('returns the dirname without trailing separator', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test',
@@ -1129,7 +1129,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with no path', function (done) {
+    it('throws on set with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1140,7 +1140,7 @@ describe('File', function () {
       done();
     });
 
-    it('replaces the dirname of the path', function (done) {
+    it('replaces the dirname of the path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1155,7 +1155,7 @@ describe('File', function () {
 
   describe('basename get/set', function () {
 
-    it('throws on get with no path', function (done) {
+    it('throws on get with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1166,7 +1166,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns the basename of the path', function (done) {
+    it('returns the basename of the path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1177,7 +1177,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not append trailing separator when directory', function (done) {
+    it('does not append trailing separator when directory', function (done: MochaDone) {
       const file = new Vinyl({
         path: '/test/foo',
         stat: Object.assign(
@@ -1192,7 +1192,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not append trailing separator when symlink', function (done) {
+    it('does not append trailing separator when symlink', function (done: MochaDone) {
       const file = new Vinyl({
         path: '/test/foo',
         stat: Object.assign(
@@ -1207,7 +1207,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not append trailing separator when directory & symlink', function (done) {
+    it('does not append trailing separator when directory & symlink', function (done: MochaDone) {
       const file = new Vinyl({
         path: '/test/foo',
         stat: Object.assign(
@@ -1223,7 +1223,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes trailing separator', function (done) {
+    it('removes trailing separator', function (done: MochaDone) {
       const file = new Vinyl({
         path: '/test/foo/',
       });
@@ -1232,7 +1232,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes trailing separator when directory', function (done) {
+    it('removes trailing separator when directory', function (done: MochaDone) {
       const file = new Vinyl({
         path: '/test/foo/',
         stat: Object.assign(
@@ -1247,7 +1247,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes trailing separator when symlink', function (done) {
+    it('removes trailing separator when symlink', function (done: MochaDone) {
       const file = new Vinyl({
         path: '/test/foo/',
         stat: Object.assign(
@@ -1262,7 +1262,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes trailing separator when directory & symlink', function (done) {
+    it('removes trailing separator when directory & symlink', function (done: MochaDone) {
       const file = new Vinyl({
         path: '/test/foo/',
         stat: Object.assign(
@@ -1278,7 +1278,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with no path', function (done) {
+    it('throws on set with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1289,7 +1289,7 @@ describe('File', function () {
       done();
     });
 
-    it('replaces the basename of the path', function (done) {
+    it('replaces the basename of the path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1304,7 +1304,7 @@ describe('File', function () {
 
   describe('stem get/set', function () {
 
-    it('throws on get with no path', function (done) {
+    it('throws on get with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1315,7 +1315,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns the stem of the path', function (done) {
+    it('returns the stem of the path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1326,7 +1326,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with no path', function (done) {
+    it('throws on set with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1337,7 +1337,7 @@ describe('File', function () {
       done();
     });
 
-    it('replaces the stem of the path', function (done) {
+    it('replaces the stem of the path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1352,7 +1352,7 @@ describe('File', function () {
 
   describe('extname get/set', function () {
 
-    it('throws on get with no path', function (done) {
+    it('throws on get with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1363,7 +1363,7 @@ describe('File', function () {
       done();
     });
 
-    it('returns the extname of the path', function (done) {
+    it('returns the extname of the path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1374,7 +1374,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with no path', function (done) {
+    it('throws on set with no path', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1385,7 +1385,7 @@ describe('File', function () {
       done();
     });
 
-    it('replaces the extname of the path', function (done) {
+    it('replaces the extname of the path', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         base: '/test/',
@@ -1400,7 +1400,7 @@ describe('File', function () {
 
   describe('path get/set', function () {
 
-    it('records path in history upon instantiation', function (done) {
+    it('records path in history upon instantiation', function (done: MochaDone) {
       const file = new Vinyl({
         cwd: '/',
         path: '/test/test.coffee',
@@ -1414,7 +1414,7 @@ describe('File', function () {
       done();
     });
 
-    it('records path in history when set', function (done) {
+    it('records path in history when set', function (done: MochaDone) {
       const val = path.normalize('/test/test.js');
       const file = new Vinyl({
         cwd: '/',
@@ -1438,7 +1438,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not record path in history when set to the current path', function (done) {
+    it('does not record path in history when set to the current path', function (done: MochaDone) {
       const val = path.normalize('/test/test.coffee');
       const file = new Vinyl({
         cwd: '/',
@@ -1455,7 +1455,7 @@ describe('File', function () {
       done();
     });
 
-    it('does not record path in history when set to empty string', function (done) {
+    it('does not record path in history when set to empty string', function (done: MochaDone) {
       const val = path.normalize('/test/test.coffee');
       const file = new Vinyl({
         cwd: '/',
@@ -1471,7 +1471,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with null path', function (done) {
+    it('throws on set with null path', function (done: MochaDone) {
       const file = new Vinyl();
 
       expect(file.path).toNotExist();
@@ -1485,7 +1485,7 @@ describe('File', function () {
       done();
     });
 
-    it('normalizes the path upon set', function (done) {
+    it('normalizes the path upon set', function (done: MochaDone) {
       const val = '/test/foo/../test.coffee';
       const expected = path.normalize(val);
       const file = new Vinyl();
@@ -1497,7 +1497,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes the trailing separator upon set', function (done) {
+    it('removes the trailing separator upon set', function (done: MochaDone) {
       const file = new Vinyl();
       file.path = '/test/';
 
@@ -1506,7 +1506,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes the trailing separator upon set when directory', function (done) {
+    it('removes the trailing separator upon set when directory', function (done: MochaDone) {
       const file = new Vinyl({
         stat: Object.assign(
           new fs.Stats(),
@@ -1522,7 +1522,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes the trailing separator upon set when symlink', function (done) {
+    it('removes the trailing separator upon set when symlink', function (done: MochaDone) {
       const file = new Vinyl({
         stat: Object.assign(
           new fs.Stats(),
@@ -1538,7 +1538,7 @@ describe('File', function () {
       done();
     });
 
-    it('removes the trailing separator upon set when directory & symlink', function (done) {
+    it('removes the trailing separator upon set when directory & symlink', function (done: MochaDone) {
       const file = new Vinyl({
         stat: Object.assign(
           new fs.Stats(),
@@ -1558,14 +1558,14 @@ describe('File', function () {
 
   describe('symlink get/set', function () {
 
-    it('return null on get with no symlink', function (done) {
+    it('return null on get with no symlink', function (done: MochaDone) {
       const file = new Vinyl();
 
       expect<string | null>(file.symlink).toEqual(null);
       done();
     });
 
-    it('returns _symlink', function (done) {
+    it('returns _symlink', function (done: MochaDone) {
       const val = '/test/test.coffee';
       const file: Vinyl & {_symlink: string} = <any> new Vinyl();
       file._symlink = val;
@@ -1574,7 +1574,7 @@ describe('File', function () {
       done();
     });
 
-    it('throws on set with non-string', function (done) {
+    it('throws on set with non-string', function (done: MochaDone) {
       const file = new Vinyl();
 
       function invalid() {
@@ -1585,7 +1585,7 @@ describe('File', function () {
       done();
     });
 
-    it('sets _symlink', function (done) {
+    it('sets _symlink', function (done: MochaDone) {
       const val = '/test/test.coffee';
       const expected = path.normalize(val);
       const file: Vinyl & {_symlink: string} = <any> new Vinyl();
@@ -1595,7 +1595,7 @@ describe('File', function () {
       done();
     });
 
-    it('allows relative symlink', function (done) {
+    it('allows relative symlink', function (done: MochaDone) {
       const val = 'test.coffee';
       const file = new Vinyl();
       file.symlink = val;
@@ -1604,7 +1604,7 @@ describe('File', function () {
       done();
     });
 
-    it('normalizes and removes trailing separator upon set', function (done) {
+    it('normalizes and removes trailing separator upon set', function (done: MochaDone) {
       const val = '/test/foo/../bar/';
       const expected = path.normalize(val.slice(0, -1));
       const file = new Vinyl();
