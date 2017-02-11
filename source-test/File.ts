@@ -1,123 +1,120 @@
-
 import File = require('vinyl');
 import * as Stream from 'stream';
 import * as fs from 'fs';
 
-new File({
+new File({
   cwd: '/',
   base: '/test/',
   path: '/test/file.ts',
-  contents: new Buffer('test = 123')
+  contents: new Buffer('test = 123')
 });
 
 let fakeStream: NodeJS.ReadWriteStream;
 
 describe('File', () => {
-
   describe('constructor()', () => {
-
-    it('should default cwd to process.cwd', done => {
+    it('should default cwd to process.cwd', (done: MochaDone) => {
       const file = new File();
       file.cwd.should.equal(process.cwd());
       done();
     });
 
-    it('should default base to cwd', done => {
+    it('should default base to cwd', (done: MochaDone) => {
       const cwd = '/';
-      const file = new File({ cwd: cwd });
+      const file = new File({cwd: cwd});
       file.basename.should.equal(cwd);
       done();
     });
 
-    it('should default base to cwd even when none is given', done => {
+    it('should default base to cwd even when none is given', (done: MochaDone) => {
       const file = new File();
       file.basename.should.equal(process.cwd());
       done();
     });
 
-    it('should default path to null', done => {
+    it('should default path to null', (done: MochaDone) => {
       const file = new File();
       should.not.exist(file.path);
       done();
     });
 
-    it('should default stat to null', done => {
+    it('should default stat to null', (done: MochaDone) => {
       const file = new File();
       should.not.exist(file.stat);
       done();
     });
 
-    it('should default contents to null', done => {
+    it('should default contents to null', (done: MochaDone) => {
       const file = new File();
       should.not.exist(file.contents);
       done();
     });
 
-    it('should set base to given value', done => {
+    it('should set base to given value', (done: MochaDone) => {
       const val = '/';
-      const file = new File({ base: val });
+      const file = new File({base: val});
       file.basename.should.equal(val);
       done();
     });
 
-    it('should set cwd to given value', done => {
+    it('should set cwd to given value', (done: MochaDone) => {
       const val = '/';
-      const file = new File({ cwd: val });
+      const file = new File({cwd: val});
       file.cwd.should.equal(val);
       done();
     });
 
-    it('should set path to given value', done => {
+    it('should set path to given value', (done: MochaDone) => {
       const val = '/test.coffee';
-      const file = new File({ path: val });
+      const file = new File({path: val});
       file.path.should.equal(val);
       done();
     });
 
-    it('should set stat to given value', done => {
+    it('should set stat to given value', (done: MochaDone) => {
       const val = {};
-      const file = new File(<fs.Stats><any>{ stat: val });
+      const file = new File(<fs.Stats><any>{stat: val});
       file.stat.should.equal(val);
       done();
     });
 
-    it('should set contents to given value', done => {
+    it('should set contents to given value', (done: MochaDone) => {
       const val = new Buffer('test');
-      const file = new File({ contents: val });
+      const file = new File({contents: val});
       file.contents.should.equal(val);
       done();
     });
 
-    it('should default basename to cwd', done => {
+    it('should default basename to cwd', (done: MochaDone) => {
       const cwd = '/';
-      const file = new File({ cwd: cwd });
+      const file = new File({cwd: cwd});
       file.basename.should.equal(cwd);
       done();
     });
 
-    it('should default basename to cwd even when none is given', done => {
+    it('should default basename to cwd even when none is given', (done: MochaDone) => {
       const file = new File();
       file.basename.should.equal(process.cwd());
       done();
     });
 
-    it('should set basename to given value', done => {
+    it('should set basename to given value', (done: MochaDone) => {
       const val = '/';
-      const file = new File({ base: val });
+      const file = new File({base: val});
       file.basename.should.equal(val);
       done();
     });
 
-    it('should default extname to null', done => {
+    it('should default extname to null', (done: MochaDone) => {
       const cwd = '/';
-      const file = new File({ cwd: cwd });
+      const file = new File({cwd: cwd});
       should.not.exist(file.path);
       done();
     });
 
-    it('should default dirname to null', done => {
+    it('should default dirname to null', (done: MochaDone) => {
       const cwd = '/';
-      const file = new File({ cwd: cwd });
+      const file = new File({cwd: cwd});
       should.not.exist(file.dirname);
       done();
     });
@@ -125,70 +122,70 @@ describe('File', () => {
   });
 
   describe('isBuffer()', () => {
-    it('should return true when the contents are a Buffer', done => {
+    it('should return true when the contents are a Buffer', (done: MochaDone) => {
       const val = new Buffer('test');
-      const file = new File({ contents: val });
+      const file = new File({contents: val});
       file.isBuffer().should.equal(true);
       done();
     });
 
-    it('should return false when the contents are a Stream', done => {
-      const file = new File({ contents: fakeStream });
+    it('should return false when the contents are a Stream', (done: MochaDone) => {
+      const file = new File({contents: fakeStream});
       file.isBuffer().should.equal(false);
       done();
     });
 
-    it('should return false when the contents are a null', done => {
-      const file = new File({ contents: null });
+    it('should return false when the contents are a null', (done: MochaDone) => {
+      const file = new File({contents: null});
       file.isBuffer().should.equal(false);
       done();
     });
   });
 
   describe('isStream()', () => {
-    it('should return false when the contents are a Buffer', done => {
+    it('should return false when the contents are a Buffer', (done: MochaDone) => {
       const val = new Buffer('test');
-      const file = new File({ contents: val });
+      const file = new File({contents: val});
       file.isStream().should.equal(false);
       done();
     });
 
-    it('should return true when the contents are a Stream', done => {
-      const file = new File({ contents: fakeStream });
+    it('should return true when the contents are a Stream', (done: MochaDone) => {
+      const file = new File({contents: fakeStream});
       file.isStream().should.equal(true);
       done();
     });
 
-    it('should return false when the contents are a null', done => {
-      const file = new File({ contents: null });
+    it('should return false when the contents are a null', (done: MochaDone) => {
+      const file = new File({contents: null});
       file.isStream().should.equal(false);
       done();
     });
   });
 
   describe('isNull()', () => {
-    it('should return false when the contents are a Buffer', done => {
+    it('should return false when the contents are a Buffer', (done: MochaDone) => {
       const val = new Buffer('test');
-      const file = new File({ contents: val });
+      const file = new File({contents: val});
       file.isNull().should.equal(false);
       done();
     });
 
-    it('should return false when the contents are a Stream', done => {
-      const file = new File({ contents: fakeStream });
+    it('should return false when the contents are a Stream', (done: MochaDone) => {
+      const file = new File({contents: fakeStream});
       file.isNull().should.equal(false);
       done();
     });
 
-    it('should return true when the contents are a null', done => {
-      const file = new File({ contents: null });
+    it('should return true when the contents are a null', (done: MochaDone) => {
+      const file = new File({contents: null});
       file.isNull().should.equal(true);
       done();
     });
   });
 
   describe('clone()', () => {
-    it('should copy all attributes over with Buffer', done => {
+    it('should copy all attributes over with Buffer', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -219,7 +216,7 @@ describe('File', () => {
       done();
     });
 
-    it('should copy all attributes over with Stream', done => {
+    it('should copy all attributes over with Stream', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -237,7 +234,7 @@ describe('File', () => {
       done();
     });
 
-    it('should copy all attributes over with null', done => {
+    it('should copy all attributes over with null', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -255,7 +252,7 @@ describe('File', () => {
       done();
     });
 
-    it('should properly clone the `stat` property', done => {
+    it('should properly clone the `stat` property', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -276,7 +273,7 @@ describe('File', () => {
   });
 
   describe('pipe()', () => {
-    it('should write to stream with Buffer', done => {
+    it('should write to stream with Buffer', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -297,7 +294,7 @@ describe('File', () => {
       ret.should.equal(stream, 'should return the stream');
     });
 
-    it('should pipe to stream with Stream', done => {
+    it('should pipe to stream with Stream', (done: MochaDone) => {
       const testChunk = new Buffer('test');
       const options = {
         cwd: '/',
@@ -322,7 +319,7 @@ describe('File', () => {
       }
     });
 
-    it('should do nothing with null', done => {
+    it('should do nothing with null', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -341,7 +338,7 @@ describe('File', () => {
       ret.should.equal(stream, 'should return the stream');
     });
 
-    it('should write to stream with Buffer', done => {
+    it('should write to stream with Buffer', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -359,11 +356,11 @@ describe('File', () => {
       stream.on('end', () => {
         throw new Error('should not end');
       });
-      const ret = file.pipe(stream, { end: false });
+      const ret = file.pipe(stream, {end: false});
       ret.should.equal(stream, 'should return the stream');
     });
 
-    it('should pipe to stream with Stream', done => {
+    it('should pipe to stream with Stream', (done: MochaDone) => {
       const testChunk = new Buffer('test');
       const options = {
         cwd: '/',
@@ -382,7 +379,7 @@ describe('File', () => {
       stream.on('end', () => {
         throw new Error('should not end');
       });
-      const ret = file.pipe(stream, { end: false });
+      const ret = file.pipe(stream, {end: false});
       ret.should.equal(stream, 'should return the stream');
 
       let fileContents = file.contents;
@@ -391,7 +388,7 @@ describe('File', () => {
       }
     });
 
-    it('should do nothing with null', done => {
+    it('should do nothing with null', (done: MochaDone) => {
       const options = {
         cwd: '/',
         base: '/test/',
@@ -406,20 +403,20 @@ describe('File', () => {
       stream.on('end', () => {
         throw new Error('should not end');
       });
-      const ret = file.pipe(stream, { end: false });
+      const ret = file.pipe(stream, {end: false});
       ret.should.equal(stream, 'should return the stream');
       process.nextTick(done);
     });
   });
 
   describe('inspect()', () => {
-    it('should return correct format when no contents and no path', done => {
+    it('should return correct format when no contents and no path', (done: MochaDone) => {
       const file = new File();
       file.inspect().should.equal('<File >');
       done();
     });
 
-    it('should return correct format when Buffer and no path', done => {
+    it('should return correct format when Buffer and no path', (done: MochaDone) => {
       const val = new Buffer('test');
       const file = new File({
         contents: val
@@ -428,7 +425,7 @@ describe('File', () => {
       done();
     });
 
-    it('should return correct format when Buffer and relative path', done => {
+    it('should return correct format when Buffer and relative path', (done: MochaDone) => {
       const val = new Buffer('test');
       const file = new File({
         cwd: '/',
@@ -440,7 +437,7 @@ describe('File', () => {
       done();
     });
 
-    it('should return correct format when Buffer and only path and no base', done => {
+    it('should return correct format when Buffer and only path and no base', (done: MochaDone) => {
       const val = new Buffer('test');
       const file = new File({
         cwd: '/',
@@ -452,7 +449,7 @@ describe('File', () => {
       done();
     });
 
-    it('should return correct format when Stream and relative path', done => {
+    it('should return correct format when Stream and relative path', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         base: '/test/',
@@ -463,7 +460,7 @@ describe('File', () => {
       done();
     });
 
-    it('should return correct format when null and relative path', done => {
+    it('should return correct format when null and relative path', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         base: '/test/',
@@ -476,7 +473,7 @@ describe('File', () => {
   });
 
   describe('contents get/set', () => {
-    it('should work with Buffer', done => {
+    it('should work with Buffer', (done: MochaDone) => {
       const val = new Buffer('test');
       const file = new File();
       file.contents = val;
@@ -484,7 +481,7 @@ describe('File', () => {
       done();
     });
 
-    it('should work with Stream', done => {
+    it('should work with Stream', (done: MochaDone) => {
       const val = new Stream.PassThrough();
       const file = new File();
       file.contents = val;
@@ -492,14 +489,14 @@ describe('File', () => {
       done();
     });
 
-    it('should work with null', done => {
+    it('should work with null', (done: MochaDone) => {
       const file = new File();
       file.contents = null;
       (file.contents === null).should.equal(true);
       done();
     });
 
-    it('should not work with string', done => {
+    it('should not work with string', (done: MochaDone) => {
       const val = 'test';
       const file = new File();
       try {
@@ -512,7 +509,7 @@ describe('File', () => {
   });
 
   describe('relative get/set', () => {
-    it('should error on set', done => {
+    it('should error on set', (done: MochaDone) => {
       const file = new File();
       try {
         file.relative = 'test';
@@ -522,7 +519,7 @@ describe('File', () => {
       }
     });
 
-    it('should error on get when no base', done => {
+    it('should error on get when no base', (done: MochaDone) => {
       let a: string;
       const file = new File();
       delete file.basename;
@@ -535,7 +532,7 @@ describe('File', () => {
       }
     });
 
-    it('should error on get when no path', done => {
+    it('should error on get when no path', (done: MochaDone) => {
       let a: string;
       const file = new File();
       try {
@@ -547,7 +544,7 @@ describe('File', () => {
       }
     });
 
-    it('should return a relative path from base', done => {
+    it('should return a relative path from base', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         base: '/test/',
@@ -557,7 +554,7 @@ describe('File', () => {
       done();
     });
 
-    it('should return a relative path from cwd', done => {
+    it('should return a relative path from cwd', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         path: '/test/test.coffee'
@@ -569,7 +566,7 @@ describe('File', () => {
 
   describe('path get/set', () => {
 
-    it('should return an absolute path', done => {
+    it('should return an absolute path', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         base: '/test/',
@@ -582,7 +579,7 @@ describe('File', () => {
   });
 
   describe('history get', () => {
-    it('should error on set', done => {
+    it('should error on set', (done: MochaDone) => {
       const file = new File();
       try {
         file.history = [];
@@ -592,7 +589,7 @@ describe('File', () => {
       }
     });
 
-    it('should return an history', done => {
+    it('should return an history', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         base: '/test/',
@@ -606,7 +603,7 @@ describe('File', () => {
 
   describe('dirname get', () => {
 
-    it('should return an dirname', done => {
+    it('should return an dirname', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         base: '/test/',
@@ -616,14 +613,14 @@ describe('File', () => {
       done();
     });
 
-    it('should set dirname to given value', done => {
+    it('should set dirname to given value', (done: MochaDone) => {
       const file = new File();
       file.dirname = '.ext';
       file.dirname.should.equal('.ext');
       done();
     });
 
-    it('should set dirname to null', done => {
+    it('should set dirname to null', (done: MochaDone) => {
       const file = new File();
       file.dirname = null;
       should.not.exist(file.dirname);
@@ -633,7 +630,7 @@ describe('File', () => {
 
   describe('extname get/set', () => {
 
-    it('should return an extname', done => {
+    it('should return an extname', (done: MochaDone) => {
       const file = new File({
         cwd: '/',
         base: '/test/',
@@ -643,14 +640,14 @@ describe('File', () => {
       done();
     });
 
-    it('should set extname to given value', done => {
+    it('should set extname to given value', (done: MochaDone) => {
       const file = new File();
       file.extname = '.ext';
       file.extname.should.equal('.ext');
       done();
     });
 
-    it('should set extname to null', done => {
+    it('should set extname to null', (done: MochaDone) => {
       const file = new File();
       file.extname = null;
       should.not.exist(file.extname);
