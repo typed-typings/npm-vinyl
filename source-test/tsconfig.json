@@ -1,13 +1,21 @@
 {
   "compilerOptions": {
+    "lib": ["es2015"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "noEmit": true,
     "noImplicitAny": true,
-    "rootDir": "./",
-    "outDir": "./out/"
+    "outDir": "out",
+    "rootDir": ".",
+    "strictNullChecks": true,
+    "target": "es5"
   },
   "files": [
+    "custom-typings/cloneable-readable.d.ts",
+    "custom-typings/mississippi.d.ts",
     "File.ts",
+    "inspect-stream.ts",
+    "normalize.ts",
     "../typings/index.d.ts",
     "../out/index.d.ts"
   ]
