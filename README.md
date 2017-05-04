@@ -1,4 +1,6 @@
 # Typed vinyl
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/types/npm-vinyl.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/types/npm-vinyl.svg?branch=master)](https://travis-ci.org/types/npm-vinyl)
 
 
